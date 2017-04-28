@@ -1,0 +1,151 @@
+
+ELASTIC STACK    ELK "ElasticSearch + Logstash + Kibana"
+[ELASTICH](https://www.elastic.co/guide/en/elastic-stack/current/installing-elastic-stack.html)
+
+- Instalacion de elasticsearch
+	
+	- Agregar Repositorio
+	
+	-Instalar
+		
+		dnf install elasticsearch
+		
+		- Reiniciar daemon
+			
+			systemctl daemon-reload
+			sudo systemctl daemon-reload
+			sudo systemctl enable elasticsearch.service
+			sudo systemctl start elasticsearch.service
+			
+			- Si el servicio no inicia tendremos que comprobar la memoria para JAVA
+				
+				vim /etc/elasticsearch/jvm.options
+					
+					-Xms2g
+					-Xmx2g
+					
+					--- Lo cambiaremos acorde a nuestra memoria ram aprox
+					
+					-Xms64m			---> minimo
+					-Xmx512m		---> maximo
+			
+				- Reiniciamos el servicio
+				
+					sudo systemctl restart elasticsearch
+				
+				- Log's en el sistema 
+					
+					sudo vim /usr/lib/systemd/system/elasticsearch.service
+					
+						** QUITAR --quiet \ de execStart
+						
+					- Comprobamos reiniciando o iniciando el servicio y en otra terminal 
+						
+						journalctl -f --unit elasticsearch
+				
+		- Comprobamos la conexion 
+			
+			curl -XGET 'localhost:9200/?pretty'
+
+	HASTA AQUI OK¿? DEVERIA
+	
+	-Configurar elasticsearch
+	
+		/etc/elasticsearch/elasticsearch.yml
+		/etc/elasticsearch/log4j2.properties
+		/etc/sysconfig/elasticsearch
+
+		sudo vim /etc/elasticsearch/elasticsearch.yml
+			
+				cluster.name
+				node.name
+				action.destructive_requires_name: true # obliga a indicar el nombre del indice para borrar no *
+				
+				#network.host: 192.168.1.4
+					
+			*** bootstrap.memory_lock: true
+			***** Faltara configurar esta parte
+
+	- Instalacion de plugins X-Pack
+	
+		elastic user and the password changeme.
+
+		/usr/share/elasticsearch/bin/elasticsearch-plugin install x-pack
+		
+		- Crear indices automaticos
+			
+			vim /etc/elasticsearch/elasticsearch.yml
+				
+				action.auto_create_index: .security,.monitoring*,.watches,.triggered_watches,.watcher-history*
+
+			systemctl restart elasticsearch
+			
+			
+- Instalacion de Kibana
+
+	- Añadir repositorio
+	
+	
+	- Instalar Kibana
+		
+		dnf install kibana
+		
+		- Iniciar servicio
+		
+			systemctl daemon-reload
+			systemctl enable kibana
+			systemctl start kibana
+			
+		
+		- Configurar Kibana
+		
+			/etc/kibana/kibana.yml
+			
+			vim /etc/kibana/kibana.yml
+				
+				server.host: 192.168.1.4
+				server.name: kibana_server
+				elasticsearch.username: "elastic"
+				elasticsearch.password: "passwd"
+			
+	- Instalacion de plugins X-Pack
+
+		/usr/share/kibana/bin/kibana-plugin install x-pack
+
+- Instalacion de logstash
+
+
+
+
+--- INDICES
+
+
+
+ANNEXO
+
+
+X-PACK https://www.elastic.co/guide/en/x-pack/5.1/installing-xpack.html
+
+Setting	Description
+xpack.security.enabled
+
+Set to false to disable X-Pack security. Configure in both elasticsearch.yml and kibana.yml.
+
+xpack.monitoring.enabled
+
+Set to false to disable X-Pack monitoring. Configure in both elasticsearch.yml and kibana.yml.
+
+xpack.graph.enabled
+
+Set to false to disable X-Pack graph. Configure in both elasticsearch.yml and kibana.yml.
+
+xpack.watcher.enabled
+
+Set to false to disable Watcher. Configure in elasticsearch.yml only.
+
+xpack.reporting.enabled
+
+Set to false to disable X-Pack reporting. Configure in kibana.yml only.
+
+
+	
