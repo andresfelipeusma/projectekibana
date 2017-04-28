@@ -133,7 +133,7 @@ Editem el fitxer de configuració **/etc/filebeat/filebeat.yml**:
     - /var/log/audit/audit.log  
   document-type: syslog  
   output.logstash:  
-    ->The Logstash hosts  
+    #The Logstash hosts  
       hosts: ["ip_server:port_logstash_server"]  
       bulk_max_size: 1024  
       ssl.certificate_authorities: ["/etc/pki/tls/certs/logstash-forwarder.crt"]  
