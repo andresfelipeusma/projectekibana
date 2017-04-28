@@ -11,7 +11,7 @@ Primer ens descarreguem el paquet rpm del ElasticSearch:
 Instalem el rpm:
 ``rpm -ivh elasticsearch-5.1.1.rpm``
 
-### Elastic Search configuració (Port 9200).
+## Elastic Search configuració (Port 9200).
 Editem el fitxer de configuració **/etc/elasticsearch/elasticsearch.yml**,
 descomentem la linea ``#network.host`` i la cambiem per 
 ```network.host: localhost```, també descomentem la linea ``bootstrap.memory_lock: true``.
@@ -28,9 +28,10 @@ Primer ens descarreguem el paquet rpm del Kibana:
 ``wget https://artifacts.elastic.co/downloads/kibana/kibana-5.1.1-x86_64.rpm``
 
 Instalem el rpm:
+
 ``rpm -ivh kibana-5.1.1-x86_64.rpm``
 
-### Kibana configuració (Port 5601)
+## Kibana configuració (Port 5601)
 Editem el fitxer **/etc/kibana/kibana.yml**,
 cambiem ``server.host:0.0.0.0`` per ``server.host:localhost``, descomentem les linees ``server.host`` i ``elasticsearch.url``.
 
@@ -40,10 +41,11 @@ També podem comprovar amb ``netstat -plntu`` que el port 5601 está escoltant.
 ## Instalació del Nginx (Proxy HTTP)
 Ens descarreguem el paquet ``dnf -y install nginx httpd-tools``.
 
-### Nginx configuració.
+## Nginx configuració.
 Del fitxer **/etc/nginx/nginx.conf** esborrem el block ``server{}``.
 Creem el fitxer **/etc/nginx/conf.d/kibana.conf** per poder afegir una nova virtual host
 i afegim el següent bloc:
+
 ```
 server {
     listen 80;
@@ -73,14 +75,18 @@ Primer ens descarreguem el paquet rpm del Kibana:
 ``wget https://artifacts.elastic.co/downloads/logstash/logstash-5.1.1.rpm``
 
 Instalem el rpm:
+
 ``rpm -ivh logstash-5.1.1.rpm``
 
 ## Creació del certificat SSL 
 Primer afegim al fitxer **/etc/pki/tls/openssl.conf** la linea ``subjectAltName = IP: ip_server``.
 Generem el certificat:
+
 ```openssl req -config /etc/pki/tls/openssl.cnf -x509 -days 3650 -batch -nodes -newkey rsa:2048 -keyout /etc/pki/tls/private/logstash-forwarder.key -out /etc/pki/tls/certs/logstash-forwarder.crt```
+
 Al directori **/etc/logstash/conf.d/** cal crear 3 fitxers de configuració (filebeat-input.conf, syslog-filter.conf, output-elasticsearch.conf).
 01-filebeat-input.conf:
+
 ```
 input {
   beats {
@@ -91,7 +97,9 @@ input {
   }
 }
 ```
+
 10-syslog-filter.conf (el plugin grok ens permet parsejar els fitxers de logs):
+
 ```
 filter {
   if [type] == "syslog" {
@@ -106,7 +114,9 @@ filter {
   }
 }
 ```
+
 30-output-elasticsearch.conf:
+
 ```
 output {  
   elasticsearch { hosts => ["localhost:9200"]  
@@ -117,6 +127,7 @@ output {
   }  
 }
 ```
+
 Finalment iniciem el servei logstash.
 
 ## Instalació del Index Filebeat.
@@ -125,9 +136,11 @@ ho instalem ``rpm -ivh filebeat-5.1.1-x86_64.rpm``.
 
 ## Configuració Filebeat al client
 Primer de tot enviem al client el certificat generat previament mitjançant scp.
+
 ```scp /etc/pki/tls/certs/logstash-forwarder.crt root@remote_host:/etc/pki/tls/certs/.```
 
 Editem el fitxer de configuració **/etc/filebeat/filebeat.yml**:
+
 ```
   paths(En aquesta secció li diem al filebeat d'on agafar els logs):  
     - /var/log/audit/audit.log  
