@@ -44,7 +44,7 @@ Ens descarreguem el paquet ``dnf -y install nginx httpd-tools``.
 Del fitxer **/etc/nginx/nginx.conf** esborrem el block ``server{}``.
 Creem el fitxer **/etc/nginx/conf.d/kibana.conf** per poder afegir una nova virtual host
 i afegim el següent bloc:
-``
+```
 server {
     listen 80;
  
@@ -62,7 +62,7 @@ server {
         proxy_cache_bypass $http_upgrade;
     }
 }
-``
+```
 Creem les creedencials per autenticar-nos ``htpasswd -c /etc/nginx/.kibana-user admin``.
 Finalment iniciem el servei nginx. 
 Nota: cal tenir el http apagat per que pugui funcionar el proxy.
@@ -81,7 +81,7 @@ Generem el certificat:
 ``openssl req -config /etc/pki/tls/openssl.cnf -x509 -days 3650 -batch -nodes -newkey rsa:2048 -keyout /etc/pki/tls/private/logstash-forwarder.key -out /etc/pki/tls/certs/logstash-forwarder.crt``
 Al directori **/etc/logstash/conf.d/** cal crear 3 fitxers de configuració (filebeat-input.conf, syslog-filter.conf, output-elasticsearch.conf).
 01-filebeat-input.conf:
-``
+```
 input {
   beats {
     port => 5044
@@ -90,9 +90,9 @@ input {
     ssl_key => "/etc/pki/tls/private/logstash-forwarder.key"
   }
 }
-``
+```
 10-syslog-filter.conf (el plugin grok ens permet parsejar els fitxers de logs):
-``
+```
 filter {
   if [type] == "syslog" {
     grok {
@@ -105,16 +105,18 @@ filter {
     }
   }
 }
-``
+```
 30-output-elasticsearch.conf:
-``output {  
+```
+output {  
   elasticsearch { hosts => ["localhost:9200"]  
     hosts => "localhost:9200"  
     manage_template => false  
     index => "%{[@metadata][beat]}-%{+YYYY.MM.dd}"  
     document_type => "%{[@metadata][type]}"  
   }  
-}``
+}
+```
 Finalment iniciem el servei logstash.
 
 ## Instalació del Index Filebeat.
@@ -126,8 +128,7 @@ Primer de tot enviem al client el certificat generat previament mitjançant scp.
 ``scp /etc/pki/tls/certs/logstash-forwarder.crt root@remote_host:/etc/pki/tls/certs/.``
 
 Editem el fitxer de configuració **/etc/filebeat/filebeat.yml**:
-
-``
+```
 paths(En aquesta secció li diem al filebeat d'on agafar els logs):  
     - /var/log/audit/audit.log  
   document-type: syslog  
@@ -139,4 +140,4 @@ output.logstash:
   template.name: "filebeat"  
   template.path: "filebeat.template.json"  
   template.overwrite: false
-  ``
+```
