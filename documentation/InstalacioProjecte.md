@@ -78,7 +78,7 @@ Instalem el rpm:
 ## Creació del certificat SSL 
 Primer afegim al fitxer **/etc/pki/tls/openssl.conf** la linea ``subjectAltName = IP: ip_server``.
 Generem el certificat:
-``openssl req -config /etc/pki/tls/openssl.cnf -x509 -days 3650 -batch -nodes -newkey rsa:2048 -keyout /etc/pki/tls/private/logstash-forwarder.key -out /etc/pki/tls/certs/logstash-forwarder.crt``
+```openssl req -config /etc/pki/tls/openssl.cnf -x509 -days 3650 -batch -nodes -newkey rsa:2048 -keyout /etc/pki/tls/private/logstash-forwarder.key -out /etc/pki/tls/certs/logstash-forwarder.crt```
 Al directori **/etc/logstash/conf.d/** cal crear 3 fitxers de configuració (filebeat-input.conf, syslog-filter.conf, output-elasticsearch.conf).
 01-filebeat-input.conf:
 ```
@@ -125,7 +125,7 @@ ho instalem ``rpm -ivh filebeat-5.1.1-x86_64.rpm``.
 
 ## Configuració Filebeat al client
 Primer de tot enviem al client el certificat generat previament mitjançant scp.
-``scp /etc/pki/tls/certs/logstash-forwarder.crt root@remote_host:/etc/pki/tls/certs/.``
+```scp /etc/pki/tls/certs/logstash-forwarder.crt root@remote_host:/etc/pki/tls/certs/.```
 
 Editem el fitxer de configuració **/etc/filebeat/filebeat.yml**:
 ```
