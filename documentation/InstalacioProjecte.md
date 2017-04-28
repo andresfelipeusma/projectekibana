@@ -81,16 +81,19 @@ Generem el certificat:
 ``openssl req -config /etc/pki/tls/openssl.cnf -x509 -days 3650 -batch -nodes -newkey rsa:2048 -keyout /etc/pki/tls/private/logstash-forwarder.key -out /etc/pki/tls/certs/logstash-forwarder.crt``
 Al directori **/etc/logstash/conf.d/** cal crear 3 fitxers de configuració (filebeat-input.conf, syslog-filter.conf, output-elasticsearch.conf).
 01-filebeat-input.conf:
-``input {
+``
+input {
   beats {
     port => 5044
     ssl => true
     ssl_certificate => "/etc/pki/tls/certs/logstash-forwarder.crt"
     ssl_key => "/etc/pki/tls/private/logstash-forwarder.key"
   }
-}``
+}
+``
 10-syslog-filter.conf (el plugin grok ens permet parsejar els fitxers de logs):
-``filter {
+``
+filter {
   if [type] == "syslog" {
     grok {
       match => { "message" => "%{SYSLOGTIMESTAMP:syslog_timestamp} %{SYSLOGHOST:syslog_hostname} %{DATA:syslog_program}(?:\[%{POSINT:syslog_pid}\])?: %{GREEDYDATA:syslog_message}" }
@@ -101,7 +104,8 @@ Al directori **/etc/logstash/conf.d/** cal crear 3 fitxers de configuració (fil
       match => [ "syslog_timestamp", "MMM  d HH:mm:ss", "MMM dd HH:mm:ss" ]
     }
   }
-}``
+}
+``
 30-output-elasticsearch.conf:
 ``output {  
   elasticsearch { hosts => ["localhost:9200"]  
@@ -123,7 +127,8 @@ Primer de tot enviem al client el certificat generat previament mitjançant scp.
 
 Editem el fitxer de configuració **/etc/filebeat/filebeat.yml**:
 
-``paths(En aquesta secció li diem al filebeat d'on agafar els logs):  
+``
+paths(En aquesta secció li diem al filebeat d'on agafar els logs):  
     - /var/log/audit/audit.log  
   document-type: syslog  
 output.logstash:  
@@ -133,4 +138,5 @@ output.logstash:
   ssl.certificate_authorities: ["/etc/pki/tls/certs/logstash-forwarder.crt"]  
   template.name: "filebeat"  
   template.path: "filebeat.template.json"  
-  template.overwrite: false``
+  template.overwrite: false
+  ``
