@@ -65,6 +65,7 @@ server {
     }
 }
 ```
+
 Creem les creedencials per autenticar-nos ``htpasswd -c /etc/nginx/.kibana-user admin``.
 Finalment iniciem el servei nginx. 
 Nota: cal tenir el http apagat per que pugui funcionar el proxy.
@@ -85,7 +86,8 @@ Generem el certificat:
 ```openssl req -config /etc/pki/tls/openssl.cnf -x509 -days 3650 -batch -nodes -newkey rsa:2048 -keyout /etc/pki/tls/private/logstash-forwarder.key -out /etc/pki/tls/certs/logstash-forwarder.crt```
 
 Al directori **/etc/logstash/conf.d/** cal crear 3 fitxers de configuració (filebeat-input.conf, syslog-filter.conf, output-elasticsearch.conf).
-01-filebeat-input.conf:
+
+**01-filebeat-input.conf:**
 
 ```
 input {
@@ -98,7 +100,7 @@ input {
 }
 ```
 
-10-syslog-filter.conf (el plugin grok ens permet parsejar els fitxers de logs):
+**10-syslog-filter.conf** (el plugin grok ens permet parsejar els fitxers de logs):
 
 ```
 filter {
@@ -115,7 +117,7 @@ filter {
 }
 ```
 
-30-output-elasticsearch.conf:
+**30-output-elasticsearch.conf:**
 
 ```
 output {  
