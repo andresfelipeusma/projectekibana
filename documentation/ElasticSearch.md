@@ -13,7 +13,23 @@ casi en temps real. Això significa que hi ha una lleu latència (normalment
 un segon) entre el temps que tu indexes un document fins el moment en que el 
 pots cercar.
 
-**Cluster**: es una colecció.
+**Index**: es una col·lecció de documents que tenen característiques similars.
+Per exemple, index per a dades del client, index per productes d'un catalog...
+L'index està identificat pel seu nom (ha de estar en minúscules) ja que
+es usat per referir-se al index quan es fan recerques, actualitzacions o esborrar
+els documents que contenen.
+
+**Node**: es un servidor que forma part del cluster, emmagatzema les dades
+i participa en la indexació i les capacitats de recerca que proporciona el cluster.
+El node está identificat per el seu nom per defecte es un UUID, aquest nom
+es important per propòsits administratius on tu vols identificar quins servers
+de la teva xarxa corresponen al node en el teu ES cluster.
+
+**Cluster**: es una col·lecció de un o més nodes (servers) que en conjunt 
+contenen totes les dades i proporcionen capacitats d'indexació i recerca.
+El cluster esta identificat per un únic nom per defecte es "elasticsearch",
+aquest nom es important ja que el node només pot formar part del cluster 
+al qual s'afegirà per el seu nom.
 
 ## Exemples d'ús de ElasticSearch
 
