@@ -13,12 +13,6 @@ casi en temps real. Això significa que hi ha una lleu latència (normalment
 un segon) entre el temps que tu indexes un document fins el moment en que el 
 pots cercar.
 
-**Index**: es una col·lecció de documents que tenen característiques similars.
-Per exemple, index per a dades del client, index per productes d'un catalog...
-L'index està identificat pel seu nom (ha de estar en minúscules) ja que
-es usat per referir-se al index quan es fan recerques, actualitzacions o esborrar
-els documents que contenen.
-
 **Node**: es un servidor que forma part del cluster, emmagatzema les dades
 i participa en la indexació i les capacitats de recerca que proporciona el cluster.
 El node está identificat per el seu nom per defecte es un UUID, aquest nom
@@ -30,6 +24,23 @@ contenen totes les dades i proporcionen capacitats d'indexació i recerca.
 El cluster esta identificat per un únic nom per defecte es "elasticsearch",
 aquest nom es important ja que el node només pot formar part del cluster 
 al qual s'afegirà per el seu nom.
+
+**Index**: es una col·lecció de documents que tenen característiques similars.
+Per exemple, index per a dades del client, index per productes d'un catalog...
+L'index està identificat pel seu nom (ha de estar en minúscules) ja que
+es usat per referir-se al index quan es fan recerques, actualitzacions o esborrar
+els documents que contenen. En un sol cluster pots definir els index que tu 
+vulguis.
+
+**Type**: dins de un index pots definir un o més "types". Un "type" es una 
+categoria/partició lògica dels teus index on la semàntica depèn completament
+del usuari. En general, es defineix un "type" per documents que tenen molts
+camps en comú.
+
+**Document**: es una unitat bàsica de informació que pots indexar. Per exemple
+pots tenir documents però a un sol client, un altre per a un sol producte i un altre
+per a una sola comanda. Aquest document s'expressa en JSON. Aquest document
+ha d'estar indexat/assignat en un "type" dins de un index.
 
 ## Exemples d'ús de ElasticSearch
 
