@@ -63,4 +63,12 @@ utilitzar la capacitat de cerca inversa (Percolator) per comparar els moviments
 de preus amb les consultes de clients i eventualment enviar alertes al client
 una vegada es trobin els resultats.
 
-  
+Podem fer consultes amb l'ordre curl al ElasticSearch com per exemple:
+
+Mostrar els index que tenim a la BD de ElasticSearch:
+ 
+``curl -XGET 'http://localhost:9200/filebeat-*/_search?pretty'``
+
+Esborrar un index de la BD:
+
+``curl -XDELETE 'localhost:9200/filebeat-2017.04.26'``

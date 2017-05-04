@@ -22,15 +22,6 @@ del fitxer **/etc/sysconfig/elasticsearch** descomentem la linea ``MAX_LOCKED_ME
 Per comprovar que ElasticSearch s'ha instalat correctament engeguem el servei ``elasticsearch.service`` i
 executem al navegador ``localhost:9200``. També podem comprovar amb ``netstat -plntu`` que el port 9200 está escoltant. 
 
-## Ordres interesants per executar amb curl
-
-Mostrar els index que tenim a la BD de ElasticSearch: 
-```curl -XGET 'http://localhost:9200/filebeat-*/_search?pretty'```  
-
-Esborrar un index de la BD:
-```curl -XDELETE 'localhost:9200/filebeat-2017.04.26'```
-
-
 ## Kibana instalació.
 Primer ens descarreguem el paquet rpm del Kibana:
 
