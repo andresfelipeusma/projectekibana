@@ -22,6 +22,15 @@ del fitxer **/etc/sysconfig/elasticsearch** descomentem la linea ``MAX_LOCKED_ME
 Per comprovar que ElasticSearch s'ha instalat correctament engeguem el servei ``elasticsearch.service`` i
 executem al navegador ``localhost:9200``. També podem comprovar amb ``netstat -plntu`` que el port 9200 está escoltant. 
 
+## Ordres interesants per executar amb curl
+
+Mostrar els index que tenim a la BD de ElasticSearch: 
+```curl -XGET 'http://localhost:9200/filebeat-*/_search?pretty'```  
+
+Esborrar un index de la BD:
+```curl -XDELETE 'localhost:9200/filebeat-2017.04.26'```
+
+
 ## Kibana instalació.
 Primer ens descarreguem el paquet rpm del Kibana:
 
@@ -84,6 +93,7 @@ Primer afegim al fitxer **/etc/pki/tls/openssl.conf** la linea ``subjectAltName 
 Generem el certificat:
 
 ```openssl req -config /etc/pki/tls/openssl.cnf -x509 -days 3650 -batch -nodes -newkey rsa:2048 -keyout /etc/pki/tls/private/logstash-forwarder.key -out /etc/pki/tls/certs/logstash-forwarder.crt```
+Nota: cal generar el certificat al servidor i enviar-ho als clients.
 
 Al directori **/etc/logstash/conf.d/** cal crear 3 fitxers de configuració (filebeat-input.conf, syslog-filter.conf, output-elasticsearch.conf).
 
@@ -131,8 +141,6 @@ output {
 ```
 
 Finalment iniciem el servei logstash.
-
-```curl -XGET 'http://localhost:9200/filebeat-*/_search?pretty'```
 
 
 ## Instalació del Index Filebeat.
