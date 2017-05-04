@@ -30,4 +30,17 @@ Finalment en aquesta etapa es decideix a on enviem aquest logs parsejats i modif
 Tenim varis tipus de outputs, **ElasticSearch** ( enviem els logs a ES ),
 **File** (enviem els logs en un fitxer local), **Graphite** (envia dades a l'aplicació graphite)...
 
+Estructura del fitxer on es junten les etapes previes:
+
+```input {
+  ...
+}
+
+filter {
+  ...
+}
+
+output {
+  ...
+}```
 
