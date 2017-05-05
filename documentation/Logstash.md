@@ -46,22 +46,19 @@ output {
 
 Exemple de Input que ens envia el Filebeat:
 
-```
-input {
+```input {
   beats {
     port => 5044
     ssl => true
     ssl_certificate => "/etc/pki/tls/certs/logstash-forwarder.crt"
     ssl_key => "/etc/pki/tls/private/logstash-forwarder.key"
   }
-}
-```
+}```
 
 
 Exemple de filtre LDAP:
 
-```
-filter {
+``filter {
  if [type] == "ldap" {
   grok {
     match => [ "message", "%{SYSLOGBASE} (?:(?:<= (?:b|m)db_%{DATA:index_error_filter_type}_candidates: \(%{WORD:index_error_attribute_name}\) not indexed)|(?:ppolicy_%{DATA:ppolicy_op}: %{DATA:ppolicy_data})|(?:connection_input: conn=%{INT:connection} deferring operation: %{DATA:deferring_op})|(?:connection_read\(%{INT:fd_number}\): no connection!)|(?:conn=%{INT:connection} (?:(?:fd=%{INT:fd_number} (?:(?:closed(?: \(connection lost\)|))|(?:ACCEPT from IP=%{IP:src_ip}\:%{INT:src_port} \(IP=%{IP:dst_ip}\:%{INT:dst_port}\))|(?:TLS established tls_ssf=%{INT:tls_ssf} ssf=%{INT:ssf})))|(?:op=%{INT:operation_number} (?:(?:(?:(?:SEARCH )|(?:))RESULT (?:tag=%{INT:tag}|oid=(?:%{DATA:oid}(?:))) err=%{INT:error_code}(?:(?: nentries=%{INT:nentries})|(?:)) text=(?:(?:%{DATA:error_text})|(?:)))|(?:%{WORD:operation_name}(?:(?: %{DATA:data})|(?:))))))))%{SPACE}$" ]
@@ -126,20 +123,17 @@ filter {
     }
   }
  }
-}
-```
+}``
 
 Com podem observar cada filtre que volem afegir ha de començar amb el tipus de log (ldap, samba, syslog...).
 
 Exemple de Output que enviem a ElasticSearch:
 
-```
-output {
+```output {
   elasticsearch { hosts => ["localhost:9200"]
     hosts => "localhost:9200"
     manage_template => false
     index => "%{[@metadata][beat]}-%{+YYYY.MM.dd}"
     document_type => "%{[@metadata][type]}"
   }
-}
-```
+}```
