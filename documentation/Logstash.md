@@ -44,3 +44,102 @@ output {
   ...
 }```
 
+Exemple de Input que ens envia el Filebeat:
+
+```
+input {
+  beats {
+    port => 5044
+    ssl => true
+    ssl_certificate => "/etc/pki/tls/certs/logstash-forwarder.crt"
+    ssl_key => "/etc/pki/tls/private/logstash-forwarder.key"
+  }
+}
+```
+
+
+Exemple de filtre LDAP:
+
+```
+filter {
+ if [type] == "ldap" {
+  grok {
+    match => [ "message", "%{SYSLOGBASE} (?:(?:<= (?:b|m)db_%{DATA:index_error_filter_type}_candidates: \(%{WORD:index_error_attribute_name}\) not indexed)|(?:ppolicy_%{DATA:ppolicy_op}: %{DATA:ppolicy_data})|(?:connection_input: conn=%{INT:connection} deferring operation: %{DATA:deferring_op})|(?:connection_read\(%{INT:fd_number}\): no connection!)|(?:conn=%{INT:connection} (?:(?:fd=%{INT:fd_number} (?:(?:closed(?: \(connection lost\)|))|(?:ACCEPT from IP=%{IP:src_ip}\:%{INT:src_port} \(IP=%{IP:dst_ip}\:%{INT:dst_port}\))|(?:TLS established tls_ssf=%{INT:tls_ssf} ssf=%{INT:ssf})))|(?:op=%{INT:operation_number} (?:(?:(?:(?:SEARCH )|(?:))RESULT (?:tag=%{INT:tag}|oid=(?:%{DATA:oid}(?:))) err=%{INT:error_code}(?:(?: nentries=%{INT:nentries})|(?:)) text=(?:(?:%{DATA:error_text})|(?:)))|(?:%{WORD:operation_name}(?:(?: %{DATA:data})|(?:))))))))%{SPACE}$" ]
+  }
+  date {
+    locale => "en"
+    match => [ "timestamp", "MMM  d HH:mm:ss", "MMM dd HH:mm:ss", "ISO8601" ]
+    target => "@timestamp"
+  }
+  if [operation_name] == "BIND" {
+    grok {
+      match => [ "data", "(?:(?:(?<bind_dn>anonymous))|(?:dn=\"%{DATA:bind_dn}\")) (?:(?:method=%{WORD:bind_method})|(?:mech=%{WORD:bind_mech} ssf=%{INT:bind_ssf}))%{SPACE}$" ]
+      remove_field => [ "data" ]
+    }
+  }
+  if [operation_name] == "SRCH" {
+    grok {
+      match => [ "data", "(?:(?:base=\"%{DATA:search_base}\" scope=%{INT:search_scope} deref=%{INT:search_deref} filter=\"%{DATA:search_filter}\")|(?:attr=%{DATA:search_attr}))%{SPACE}$" ]
+      remove_field => [ "data" ]
+    }
+  }
+  if [operation_name] == "MOD" {
+    grok {
+      match => [ "data", "(?:(?:dn=\"%{DATA:mod_dn}\")|(?:attr=%{DATA:mod_attr}))%{SPACE}$" ]
+      remove_field => [ "data" ]
+    }
+  }
+  if [operation_name] == "MODRDN" {
+    grok {
+      match => [ "data", "dn=\"%{DATA:modrdn_dn}\"%{SPACE}$" ]
+      remove_field => [ "data" ]
+    }
+  }
+  if [operation_name] == "ADD" {
+    grok {
+      match => [ "data", "dn=\"%{DATA:add_dn}\"%{SPACE}$" ]
+      remove_field => [ "data" ]
+    }
+  }
+  if [operation_name] == "DEL" {
+    grok {
+      match => [ "data", "dn=\"%{DATA:del_dn}\"%{SPACE}$" ]
+      remove_field => [ "data" ]
+    }
+  }
+  if [operation_name] == "CMP" {
+    grok {
+      match => [ "data", "dn=\"%{DATA:cmp_dn}\" attr=\"%{DATA:cmp_attr}\"%{SPACE}$" ]
+      remove_field => [ "data" ]
+    }
+  }
+  if [operation_name] == "EXT" {
+    grok {
+      match => [ "data", "oid=%{DATA:ext_oid}%{SPACE}$" ]
+      remove_field => [ "data" ]
+    }
+  }
+  if [ppolicy_op] == "bind" {
+    grok {
+      match => [ "ppolicy_data", "(?:(?:Entry %{DATA:ppolicy_bind_dn} has an expired password: %{INT:ppolicy_grace} grace logins)|(?:Setting warning for password expiry for %{DATA:ppolicy_bind_dn} = %{INT:ppolicy_expiration} seconds))%{SPACE}$" ]
+      remove_field => [ "ppolicy_data" ]
+    }
+  }
+ }
+}
+```
+
+Com podem observar cada filtre que volem afegir ha de començar amb el tipus de log (ldap, samba, syslog...).
+
+Exemple de Output que enviem a ElasticSearch:
+
+```
+output {
+  elasticsearch { hosts => ["localhost:9200"]
+    hosts => "localhost:9200"
+    manage_template => false
+    index => "%{[@metadata][beat]}-%{+YYYY.MM.dd}"
+    document_type => "%{[@metadata][type]}"
+  }
+}
+```
