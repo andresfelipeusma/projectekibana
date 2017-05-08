@@ -63,7 +63,13 @@ utilitzar la capacitat de cerca inversa (Percolator) per comparar els moviments
 de preus amb les consultes de clients i eventualment enviar alertes al client
 una vegada es trobin els resultats.
 
-Podem fer consultes amb l'ordre curl al ElasticSearch com per exemple:
+## Fitxer de configuració ElasticSearch
+
+En aquest fitxer no manipularem casi res ja que tot ve per defecte però
+si volem cambiar el port que escolta, cambiar la ruta dels logs que genera
+ElasticSearch, podem editar-ho desde aqui **/etc/elasticsearch/elasticsearch.yml**.
+
+Podem fer consultes a la BD de ElasticSEarch amb l'ordre curl com per exemple:
 
 Mostrar els index que tenim a la BD de ElasticSearch:
  
@@ -72,3 +78,5 @@ Mostrar els index que tenim a la BD de ElasticSearch:
 Esborrar un index de la BD:
 
 ``curl -XDELETE 'localhost:9200/filebeat-2017.04.26'``
+
+

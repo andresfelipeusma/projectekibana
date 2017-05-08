@@ -51,8 +51,28 @@ filebeat.prospectors:
   document_type: ldap (Aquesta entrada serveix per tagejar el log per desprès poder parsejar-lo amb Logstash.
 ```
 
-``
+També podem definir una sortida al client per veure si els logs s'han enviat o no:
+
+```
 output.file:
   path: "/tmp/filebeat"
   filename: filebeat
-`` 
+```
+
+Finalment cal definir el output, on enviarem els logs:
+
+```
+output.logstash:
+  # Host que té Logstash en funcionament
+  hosts: ["10.250.100.190:5044"]
+  bulk_max_size: 1024
+  # SSL
+  ssl.certificate_authorities: ["/etc/pki/tls/certs/logstash-forwarder.crt"]
+  template.name: "filebeat"
+  template.path: "filebeat.template.json"
+  template.overwrite: false
+```
+
+Test per comprovar que no hi han errades al fitxer de configuració:
+
+```filebeat.sh -c /etc/filebeat/filebeat.yml -configtest```
