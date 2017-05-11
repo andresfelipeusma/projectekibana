@@ -155,11 +155,12 @@ filter {
  if [type] == "samba" {
   grok {
     add_tag => ["samba","grooked"]
-    match =>["message", "\[%{SAMBATIME:samba_timestamp},%{SPACE}%{NUMBER:severity_code}\]%{SPACE}%{DATA:samba_class} %{GREEDYDATA:samba_message}" ]
+    match =>["message", [ "\[%{SAMBATIME:samba_timestamp},%{SPACE}%{NUMBER:severity_code}\] %{DATA:samba_class} %{GREEDYDATA:samba_message}", "\[%{SAMBATIME:samba_timestamp},%{SPACE}%{NUMBER:severity_code}\]%{GREEDYDATA:samba_class}" ] ]
     patterns_dir => ["/opt/logstash/patterns"]
    }
  }
 }
+
 ```
 Com podem observar cada filtre que volem afegir ha de començar amb el tipus de log (ldap, samba, syslog...).
 
