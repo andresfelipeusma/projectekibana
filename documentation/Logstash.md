@@ -46,7 +46,7 @@ output {
 }
 ```
 
-Exemple de Input que ens envia el Filebeat:
+- Exemple de Input que ens envia el Filebeat:
 
 ```
 input {
@@ -59,8 +59,7 @@ input {
 }
 ```
 
-
-Exemple de filtre LDAP:
+- Exemple de filtre LDAP:
 
 ```
 filter {
@@ -131,7 +130,7 @@ filter {
 }
 ```
 
-Exemple de filtre Syslog:
+- Exemple de filtre Syslog:
 
 ```
 filter {
@@ -148,7 +147,7 @@ filter {
 }
 ```
 
-Exemple de filtre Samba:
+- Exemple de filtre Samba:
 
 ```
 filter {
@@ -162,9 +161,26 @@ filter {
 }
 
 ```
+
+- Exemple de filtre Radius:
+
+```
+filter {
+  if [type] == "radius" {
+    grok {
+      match => { "message" => "%{SYSLOGTIMESTAMP:radius_timestamp}%{SPACE}%{YEAR}%{SPACE}:%{SPACE}%{WORD:radius_severity}:%{SPACE}%{GREEDYDATA:radius_messsage}" }
+      add_tag => "radius"
+    }
+    date {
+      match => [ "syslog_timestamp", "MMM  d HH:mm:ss", "MMM dd HH:mm:ss" ]
+    }
+  }
+}
+```
+
 Com podem observar cada filtre que volem afegir ha de començar amb el tipus de log (ldap, samba, syslog...).
 
-Exemple de Output que enviem a ElasticSearch:
+- Exemple de Output que enviem a ElasticSearch:
 
 ```
 output {
