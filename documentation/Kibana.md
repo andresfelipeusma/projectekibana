@@ -16,6 +16,7 @@ filtrar camps rebuts pel elasticSearch...
 **Visualize**: permet crear visualitzacions de la data dels indexs del ElasticSearch.
 Aquestes visualitzacions están basades en queries del ElasticSearch. També et 
 permet crear grafiques que t'ensenya tendencies, pics... Podrem visualitzar de diferent
-formes les dades, ja sigui mitjançant grafics de barres, grafics circulars, tag clouds, 
+formes les dades, ja sigui mitjançant grafics de barres, grafics circulars, tag clouds...
 
-**Dashboard**: 
+**Dashboard**: basicament en aquest apartat proyecta una col·lecció de visualitzacions
+grabades, pots afegir els grafics que vulgis, escriure anotacions...

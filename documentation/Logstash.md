@@ -178,6 +178,12 @@ filter {
 }
 ```
 
+- Exemple filtre radius llarg:
+
+```
+%{SYSLOGTIMESTAMP:radius_timestamp}%{SPACE}%{YEAR}%{SPACE}Packet-Type = %{GREEDYDATA:Packet_type}%{SPACE}User-Name = "%{USERNAME:user_name}"%{SPACE}NAS-IP-Address = %{GREEDYDATA:NAS_IP_address}%{SPACE}NAS-Identifier = "%{UUID:NAS_Identifier}"%{SPACE}NAS-Port = %{INT:NAS_Port}%{SPACE}Called-Station-Id = "%{DATA:Called_Station_Id}"%{SPACE}Calling-Station-Id = "%{DATA:Calling_Station_Id}"%{SPACE}Framed-MTU = %{GREEDYDATA:Framed_MTU}%{SPACE}NAS-Port-Type = %{GREEDYDATA:NAS_Port_Type}%{SPACE}Connect-Info = "%{DATA:Connect_Info}"%{SPACE}EAP-Message = %{GREEDYDATA:EAP_Message}%{SPACE}Message-Authenticator = %{GREEDYDATA:Message_Authenticator}
+```
+
 Com podem observar cada filtre que volem afegir ha de començar amb el tipus de log (ldap, samba, syslog...).
 
 - Exemple de Output que enviem a ElasticSearch:
