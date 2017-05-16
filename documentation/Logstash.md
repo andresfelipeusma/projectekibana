@@ -176,3 +176,33 @@ output {
   }
 }
 ```
+
+### Altres utilitats dels filtres de Logstash
+
+- Excloure camps: 
+
+```
+mutate {
+  remove_field => ["%{beat}"] # Esborra tot el camp Beat
+}
+```
+
+```
+mutate {
+  remove_field => ["%{[beat][hostname]}"] # Esborrar un camp niat
+}
+```
+
+- Crear condicions: 
+
+```
+if [operation_name] == "DEL" { # Només es complirá si el nom de l'operació es DEL
+  grok {
+    match => [ "data", "dn=\"%{DATA:del_dn}\"%{SPACE}$" ]
+    remove_field => [ "data" ]
+  }
+}
+```
+
+En aquesta web, [Grok Debugger](https://grokdebug.herokuapp.com/ "Grok Debugger"),
+podrem probar els nostres groks i comprovar si coincideixen amb les condicions que creem.
