@@ -5,15 +5,21 @@
 La monitorització de dades depèn de 3 aspectes importants:
 
 - Enviament i recopilació (Logstash): eines amb capacitat d'enviar 
-qualsevol format de logs/dsdes, facilitat per escollir inputs, crear filtres
-i enviar l'informació relevant.
+qualsevol format de logs/dades, facilitat per escollir inputs, crear filtres
+i enviar la informació rellevant.
  
-- Emmagatzament i retenció de dades (Elastic Search): eines amb capacitat 
+- Emmagatzematge i retenció de dades: eines amb capacitat 
 de fer cerques completes i emmagatzemar les dades en una Base de dades.
 
-- Analisi i visualització (Kibana): eines amb capacitat de crear dashboards
-i grafiques amb facilitat donats aquestes dades.
+- Anàlisi i visualització: eines amb capacitat de crear dashboards
+i gràfiques amb facilitat donats aquestes dades.
 
 ELK stack son tres eines amb aquestes característiques, juntes poden oferir
-deteccions de incidencies en una organització de gran tamany. 
+deteccions de incidències en una organització de gran mida. Logstash es el parsejador
+de les dades que provenen de diverses fonts i que filtrades podem prescindir d'alguna 
+part del missatge que no es important. ElasticSearch fa el paper de servidor de recerques
+on s'emmagatzemen les dades ja optimitzades per la indexació. Kibana es el front-end
+per a la visualització i anàlisi de dades. Cadascun es pot utilitzar com a eina 
+independent però la unió d'aquests crea una combinació perfecta per a la gestió
+de registres. 
 
