@@ -1,6 +1,6 @@
 # Beats
 
-Els Beats son carregadors de dades de codi obert, basicament s'instal·len
+Els Beats son carregadors de dades de codi obert, bàsicament s'instal·len
 com agents als servidors. Poden enviar dades directament a ElasticSearch
 o enviar-les mitjançant Logstash a ElasticSearch. Hi han diferents tipus de 
 Beats (PacketBeat, FileBeat, MetricBeat i WinLogBeat), però el més utilitzat
@@ -9,14 +9,14 @@ es FileBeat.
 ## FileBeat
 
 FileBeat té com a funció monitoritzar els logs de directoris o directament
-de fitxers i finalment enviar-los a ES o Logstash. El funcionament es el seguent,
+de fitxers i finalment enviar-los a ES o Logstash. El funcionament es el següent,
 quan iniciem FileBeat fa una recerca de les rutes que tu l'hi afegeixes als prospectors.
-Per cada fitxer que troba FileBeat inicia un recolector. Cada recolector llegeix un fitxer de log 
+Per cada fitxer que troba FileBeat inicia un recol·lector. Cada recol·lector llegeix un fitxer de log 
 i finalment l'envia a Logstash.
 
 ### Prospector
 
-El prospector es el responsable de gestionar els recolectors i trobar totes les fonts
+El prospector es el responsable de gestionar els recol·lectors i trobar totes les fonts
 que ha de llegir. Exemple de un prospector:
 
 ```
@@ -29,13 +29,13 @@ filebeat.prospectors:
 
 ### Harvester/Recolector
 
-El recolector es el responsable de llegir el contingut de un fitxer de logs. 
-Llegeix linea a linea el fitxer i envia el contingut al output. S'incia un
-recolector per cada fitxer, també es responsable de obrir i tancar el fitxer.
+El recol·lector es el responsable de llegir el contingut de un fitxer de logs. 
+Llegeix línia a línia el fitxer i envia el contingut al output. S'inicia un
+recol·lector per cada fitxer, també es responsable de obrir i tancar el fitxer.
 
 ### Fitxer de configuració
 
-Els fitxers de configuració dels Beats están basats en YAML. La primera part
+Els fitxers de configuració dels Beats estan basats en YAML. La primera part
 important d'aquest fitxer es la definició dels prospectors:
 
 ```

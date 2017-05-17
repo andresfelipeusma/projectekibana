@@ -15,7 +15,7 @@ pots cercar.
 
 **Node**: es un servidor que forma part del cluster, emmagatzema les dades
 i participa en la indexació i les capacitats de recerca que proporciona el cluster.
-El node está identificat per el seu nom per defecte es un UUID, aquest nom
+El node esta identificat per el seu nom per defecte es un UUID, aquest nom
 es important per propòsits administratius on tu vols identificar quins servers
 de la teva xarxa corresponen al node en el teu ES cluster.
 
@@ -47,7 +47,7 @@ ha d'estar indexat/assignat en un "type" dins de un index.
 1 -> En cas de tenir una web de venta de productes, has de permetre
 als teus clients fer cerques d'aquests productes. En aquest cas pots
 utilitzar ElasticSearch per emmagatzemar el catalog dels productes i 
-l'inventari i proporcionar una cerca amb suggerencias d'auto-completar.
+l'inventari i proporcionar una cerca amb suggerències d'auto-completar.
 
 2 -> Vols recopilar logs o dades de transaccions i desitgeu analitzar-les,
 mirar les tendències, estadístiques, sumaritzacions o anomalies. En aquest cas
@@ -58,7 +58,7 @@ les dades. Amb aquestes dades pots alimentar ElasticSearch i fer cerques.
 el client especifica una regla com la següent: "Estic interessat en comprar
 un aparell electrònic i vull estar notificat quan el preu d'aquest aparell 
 baixi de X euros de qualsevol venedor durant el mes següent". En aquest cas
-pots retallar el preus dels proveeidors, introduir-los en ElasticSearch i 
+pots retallar el preus dels proveïdors, introduir-los en ElasticSearch i 
 utilitzar la capacitat de cerca inversa (Percolator) per comparar els moviments
 de preus amb les consultes de clients i eventualment enviar alertes al client
 una vegada es trobin els resultats.
@@ -66,8 +66,8 @@ una vegada es trobin els resultats.
 ## Fitxer de configuració ElasticSearch
 
 En aquest fitxer no manipularem casi res ja que tot ve per defecte però
-si volem cambiar el port que escolta, cambiar la ruta dels logs que genera
-ElasticSearch, podem editar-ho desde aqui **/etc/elasticsearch/elasticsearch.yml**.
+si volem canviar el port que escolta, canviar la ruta dels logs que genera
+ElasticSearch, podem editar-ho des de aquí **/etc/elasticsearch/elasticsearch.yml**.
 
 Podem fer consultes a la BD de ElasticSEarch amb l'ordre curl com per exemple:
 
