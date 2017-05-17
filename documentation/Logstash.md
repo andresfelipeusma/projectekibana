@@ -59,6 +59,19 @@ input {
 }
 ```
 
+- Ldap logs:
+
+```
+Apr 11 09:53:08 ldapserver slapd[19329]: conn=1202229 fd=28 ACCEPT from IP=1.2.3.4:57632 (IP=0.0.0.0:389)
+Apr 11 09:53:08 ldapserver slapd[19329]: conn=1202229 op=0 BIND dn="cn=User,c=corp" method=128
+Apr 11 09:53:08 ldapserver slapd[19329]: conn=1202229 op=0 BIND dn="cn=User,c=corp" mech=SIMPLE ssf=0
+Apr 11 09:53:08 ldapserver slapd[19329]: conn=1202229 op=0 RESULT tag=97 err=0 text=
+Apr 11 09:53:08 ldapserver slapd[19329]: conn=1202229 op=1 SRCH base="c=fr" scope=0 deref=2 filter="(objectClass=*)"
+Apr 11 09:53:08 ldapserver slapd[19329]: conn=1202229 op=1 SRCH attr=contextCSN
+Apr 11 09:53:08 ldapserver slapd[19329]: conn=1202229 op=1 SEARCH RESULT tag=101 err=0 nentries=1 text=
+Apr 11 09:53:08 ldapserver slapd[19329]: conn=1202229 fd=28 closed (connection lost) 
+```
+
 - Exemple de filtre LDAP:
 
 ```
@@ -147,6 +160,17 @@ filter {
 }
 ```
 
+- Samba Logs:
+
+```
+[2017/05/07 03:48:30,  0] lib/util_sock.c:1491(get_peer_addr_internal) getpeername failed. Error was Transport endpoint is not connected
+[2017/05/07 03:48:30,  0] lib/util_sock.c:1491(get_peer_addr_internal) getpeername failed. Error was Transport endpoint is not connected
+[2017/05/07 03:48:30,  0] lib/access.c:410(check_access)
+[2017/05/07 03:48:30,  0] lib/util_sock.c:1491(get_peer_addr_internal) getpeername failed. Error was Transport endpoint is not connected
+[2017/05/07 03:48:30,  0] lib/util_sock.c:1491(get_peer_addr_internal) getpeername failed. Error was Transport endpoint is not connected Denied connection from 0.0.0.0 (0.0.0.0)
+[2017/05/07 03:48:30,  0] lib/util_sock.c:738(write_data)
+```
+
 - Exemple de filtre Samba:
 
 ```
@@ -160,6 +184,14 @@ filter {
  }
 }
 
+```
+
+- Radius logs:
+
+```
+Wed May 10 13:24:20 2017 : Info: rlm_sql (sql_mysql): Driver rlm_sql_mysql (module rlm_sql_mysql) loaded and linked
+Wed May 10 13:24:20 2017 : Info: rlm_sql (sql_mysql): Attempting to connect to radius@localhost:/radius
+Wed May 10 13:24:20 2017 : Info: rlm_sql (sql_mysql): Attempting to connect rlm_sql_mysql #0
 ```
 
 - Exemple de filtre Radius:
@@ -178,7 +210,40 @@ filter {
 }
 ```
 
-- Exemple filtre radius llarg:
+- Radius logs amb detalls:
+
+```
+Tue Apr 18 07:37:13 2017
+	Packet-Type = Access-Request
+	User-Name = "rvazquez"
+	NAS-IP-Address = 10.200.199.12
+	NAS-Identifier = "002722fc0683"
+	NAS-Port = 0
+	Called-Station-Id = "0A-27-22-FD-06-83:edt_profes"
+	Calling-Station-Id = "04-02-1F-EC-61-3C"
+	Framed-MTU = 1400
+	NAS-Port-Type = Wireless-802.11
+	Connect-Info = "CONNECT 0Mbps 802.11b"
+	EAP-Message = 0x02bf000d017276617a7175657a
+	Message-Authenticator = 0xba4b839d2521175424397b36cceb0d8a
+
+Tue Apr 18 07:37:22 2017
+	Packet-Type = Access-Request
+	User-Name = "rvazquez"
+	NAS-IP-Address = 10.200.199.12
+	NAS-Identifier = "002722fc0683"
+	NAS-Port = 0
+	Called-Station-Id = "0A-27-22-FD-06-83:edt_profes"
+	Calling-Station-Id = "04-02-1F-EC-61-3C"
+	Framed-MTU = 1400
+	NAS-Port-Type = Wireless-802.11
+	Connect-Info = "CONNECT 0Mbps 802.11b"
+	EAP-Message = 0x02c000060319
+	State = 0xd95a7a22d99a7ecf01c4ca7e8f61d063
+	Message-Authenticator = 0x5f36c09c78168951f4bf0cd85a89865b
+```
+
+- Exemple filtre radius amb detalls:
 
 ```
 %{SYSLOGTIMESTAMP:radius_timestamp}%{SPACE}%{YEAR}%{SPACE}Packet-Type = %{GREEDYDATA:Packet_type}%{SPACE}User-Name = "%{USERNAME:user_name}"%{SPACE}NAS-IP-Address = %{GREEDYDATA:NAS_IP_address}%{SPACE}NAS-Identifier = "%{UUID:NAS_Identifier}"%{SPACE}NAS-Port = %{INT:NAS_Port}%{SPACE}Called-Station-Id = "%{DATA:Called_Station_Id}"%{SPACE}Calling-Station-Id = "%{DATA:Calling_Station_Id}"%{SPACE}Framed-MTU = %{GREEDYDATA:Framed_MTU}%{SPACE}NAS-Port-Type = %{GREEDYDATA:NAS_Port_Type}%{SPACE}Connect-Info = "%{DATA:Connect_Info}"%{SPACE}EAP-Message = %{GREEDYDATA:EAP_Message}%{SPACE}Message-Authenticator = %{GREEDYDATA:Message_Authenticator}
