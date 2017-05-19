@@ -86,7 +86,7 @@ per a la visualització i anàlisi de dades. Cadascun es pot utilitzar com a ein
 independent però la unió d'aquests crea una combinació perfecta per a la gestió
 de registres. 
 
-## Funcionament
+**Funcionament**
 
 La monitorització de dades depèn de 4 aspectes importants:
 
@@ -104,13 +104,31 @@ de fer cerques completes i emmagatzemar les dades en una Base de dades.
 i gràfiques amb facilitat donats aquestes dades.
 
 ---
-# FileBeat
+## FileBeat
 
 FileBeat té com a funció monitoritzar els logs de directoris o directament
 de fitxers i finalment enviar-los a ES o Logstash. El funcionament es el següent,
 quan iniciem FileBeat fa una recerca de les rutes que tu l'hi afegeixes als prospectors.
 Per cada fitxer que troba FileBeat inicia un recol·lector. Cada recol·lector llegeix un fitxer de log 
 i finalment l'envia a Logstash.
+
+### Prospectors
+Son els responsables de gestionar els recol·lectors i trobar totes les fonts que ha de llegir.
+
+Exemple:
+
+```
+filebeat.prospectors:
+- input_type: log
+  paths:
+    - /var/log/*.log
+    - /var/path2/*.log
+```
+
+---
+### Harvester/Recol·lector
+Responsable de llegir el contingut dels fitxers de logs. Llegeix línia a línia el fitxer
+les processa i les envia al output.
 
 ---
 # Logstash
@@ -129,8 +147,7 @@ El procès de logstash es basa en 3 etapes: **inputs -> filters -> output**.
 Utilitzats per rebre dades i guardar-les a Logstash. Hi han varis
 tipus de Inputs però els més usats són **File** (llegeix les dades a partir
 de un fitxer del sistema), **Syslog** (escolta el port 514 per missatges syslogs
-i els parseja mitjançant el format RFC3164), **Redis** (llegeix les dades a partir
-de un servidor redis), **Beats** (processa els esdeveniments enviats per Filebeat).
+i els parseja mitjançant el format RFC3164), **Beats** (processa els esdeveniments enviats per Filebeat).
 
 ## Filtres
 Serveixen per editar els logs que rebem que mitjançant certes condicions

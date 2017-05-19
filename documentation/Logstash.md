@@ -183,7 +183,6 @@ filter {
    }
  }
 }
-
 ```
 
 - Radius logs:
@@ -246,7 +245,28 @@ Tue Apr 18 07:37:22 2017
 - Exemple filtre radius amb detalls:
 
 ```
-%{SYSLOGTIMESTAMP:radius_timestamp}%{SPACE}%{YEAR}%{SPACE}Packet-Type = %{GREEDYDATA:Packet_type}%{SPACE}User-Name = "%{USERNAME:user_name}"%{SPACE}NAS-IP-Address = %{GREEDYDATA:NAS_IP_address}%{SPACE}NAS-Identifier = "%{UUID:NAS_Identifier}"%{SPACE}NAS-Port = %{INT:NAS_Port}%{SPACE}Called-Station-Id = "%{DATA:Called_Station_Id}"%{SPACE}Calling-Station-Id = "%{DATA:Calling_Station_Id}"%{SPACE}Framed-MTU = %{GREEDYDATA:Framed_MTU}%{SPACE}NAS-Port-Type = %{GREEDYDATA:NAS_Port_Type}%{SPACE}Connect-Info = "%{DATA:Connect_Info}"%{SPACE}EAP-Message = %{GREEDYDATA:EAP_Message}%{SPACE}Message-Authenticator = %{GREEDYDATA:Message_Authenticator}
+filter {
+ if [type] == "radius" {
+  grok {
+    match =>{ "message" => "%{RADIUSTIMESTAMP:radius_timestamp}%{SPACE}Packet-Type%{SPACE}=%{SPACE}
+							%{GREEDYDATA:Packet_Type}%{SPACE}User-Name%{SPACE}=%{SPACE}\"%{USERNAME:User_Name}\"
+							%{SPACE}NAS-IP-Address%{SPACE}=%{SPACE}%{IPV4:NAS_IP_Address}%{SPACE}NAS-Identifier
+							%{SPACE}=%{SPACE}\"%{GREEDYDATA:NAS_Identifier}\"%{SPACE}NAS-Port%{SPACE}=%{SPACE}
+							%{INT:NAS_Port}%{SPACE}Called-Station-Id%{SPACE}=%{SPACE}\"%{GREEDYDATA:Called_Station_Id}\"
+							%{SPACE}Calling-Station-Id%{SPACE}=%{SPACE}\"%{GREEDYDATA:Calling_Station_Id}\"%{SPACE}Framed-MTU
+							%{SPACE}=%{SPACE}%{INT:Framed_MTU}%{SPACE}NAS-Port-Type%{SPACE}=%{SPACE}%{GREEDYDATA:NAS_Port_Type}
+							%{SPACE}Connect-Info%{SPACE}=%{SPACE}\"%{GREEDYDATA:Connect_Info}\"%{SPACE}EAP-Message%{SPACE}=%{SPACE}
+							%{GREEDYDATA:EAP_Message}%{SPACE}Message-Authenticator%{SPACE}=%{SPACE}%{GREEDYDATA:Message_Authenticator}"}
+    patterns_dir => ["/opt/logstash/patterns"]
+   }
+ }
+}
+```
+
+-Exemple creació de una pattern per al timestamp de radius (**/opt/logstash/patterns/radius**):
+
+```
+RADIUSTIMESTAMP %{SYSLOGTIMESTAMP} %{YEAR}
 ```
 
 Com podem observar cada filtre que volem afegir ha de començar amb el tipus de log (ldap, samba, syslog...).
