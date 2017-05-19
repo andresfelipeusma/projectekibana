@@ -73,6 +73,27 @@ output.logstash:
   template.overwrite: false
 ```
 
+Filebeat per defecte llegeix línia a línia els fitxers de log,
+per tant si tens un fitxer amb el següent format et llegirá cada línia com a nou log:
+
+```
+[2017/05/07 04:12:44,  0] lib/util_sock.c:1491(get_peer_addr_internal)
+  getpeername failed. Error was Transport endpoint is not connected
+[2017/05/07 04:12:44,  0] lib/access.c:410(check_access)
+[2017/05/07 04:12:44,  0] lib/util_sock.c:1491(get_peer_addr_internal)
+  getpeername failed. Error was Transport endpoint is not connected
+```
+
+Per evitar això i poder utilitzar fitxers de logs multilínia, podem afegir
+la següent configuració al filebeat:
+
+```
+multiline.pattern: '^\[[0-9]{4}\/[0-9]{2}\/[0-9]{2}' # Aqui definim el patró que identificará una línia com a nova.
+multiline.negate: true 
+multiline.match: after
+```
+
 Test per comprovar que no hi han errades al fitxer de configuració:
 
 ```filebeat.sh -c /etc/filebeat/filebeat.yml -configtest```
+
