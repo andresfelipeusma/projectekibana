@@ -269,6 +269,53 @@ filter {
 RADIUSTIMESTAMP %{SYSLOGTIMESTAMP} %{YEAR}
 ```
 
+- Altres logs de Radius:
+
+```
+Thu Apr 20 07:56:29 2017
+        Acct-Session-Id = "00000027-0000007F"
+        Acct-Status-Type = Start
+        Acct-Authentic = RADIUS
+        User-Name = "tca4581336"
+        NAS-IP-Address = 10.200.199.11
+        NAS-Identifier = "002722fc065e"
+        NAS-Port = 0
+        Called-Station-Id = "0A-27-22-FD-06-5E:edt_alumnes"
+        Calling-Station-Id = "4C-74-03-F1-79-B2"
+        NAS-Port-Type = Wireless-802.11
+        Connect-Info = "CONNECT 0Mbps 802.11b"
+        Acct-Unique-Session-Id = "b31f3e631c6ac63d"
+        Timestamp = 1492667789
+        
+Thu Apr 20 08:19:35 2017
+        Acct-Session-Id = "00000027-0000007F"
+        Acct-Status-Type = Stop
+        Acct-Authentic = RADIUS
+        User-Name = "tca4581336"
+        NAS-IP-Address = 10.200.199.11
+        NAS-Identifier = "002722fc065e"
+        NAS-Port = 0
+        Called-Station-Id = "0A-27-22-FD-06-5E:edt_alumnes"
+        Calling-Station-Id = "4C-74-03-F1-79-B2"
+        NAS-Port-Type = Wireless-802.11
+        Connect-Info = "CONNECT 0Mbps 802.11b"
+        Acct-Session-Time = 1385
+        Acct-Input-Packets = 12800
+        Acct-Output-Packets = 21220
+        Acct-Input-Octets = 1539710
+        Acct-Output-Octets = 26632291
+        Event-Timestamp = "Apr 20 2017 08:19:34 CEST"
+        Acct-Terminate-Cause = User-Request
+        Acct-Unique-Session-Id = "b31f3e631c6ac63d"
+        Timestamp = 1492669175
+```
+
+- Exemple filtre radius on ``Acct-Status-Type = Start`` :
+
+```
+%{RADIUSTIMESTAMP:radius_timestamp}%{SPACE}Acct-Session-Id%{SPACE}=%{SPACE}\"%{GREEDYDATA:Acct_Session_Id}\"%{SPACE}Acct-Status-Type%{SPACE}=%{SPACE}%{GREEDYDATA:Acct_Status_Type}%{SPACE}Acct-Authentic%{SPACE}=%{SPACE}%{GREEDYDATA:Acct_Authentic}%{SPACE}User-Name%{SPACE}=%{SPACE}\"%{GREEDYDATA:User_Name}\"%{SPACE}NAS-IP-Address%{SPACE}=%{SPACE}%{IPV4:NAS_IP_Address}%{SPACE}NAS-Identifier%{SPACE}=%{SPACE}\"%{GREEDYDATA:NAS_Identifier}\"%{SPACE}NAS-Port%{SPACE}=%{SPACE}%{INT:NAS_Port}%{SPACE}Called-Station-Id%{SPACE}=%{SPACE}\"%{GREEDYDATA:Called_Station_Id}\"%{SPACE}Calling-Station-Id%{SPACE}=%{SPACE}\"%{GREEDYDATA:Calling_Station_Id}\"%{SPACE}NAS-Port-Type%{SPACE}=%{SPACE}%{GREEDYDATA:NAS_Port_Type}%{SPACE}Connect-Info%{SPACE}=%{SPACE}\"%{GREEDYDATA:Connect_Info}\"%{SPACE}Acct-Unique-Session-Id%{SPACE}=%{SPACE}\"%{GREEDYDATA:Acct_Uniq_Sess_Id}\"%{SPACE}Timestamp%{SPACE}=%{SPACE}%{INT:timestamp}
+```
+
 Com podem observar cada filtre que volem afegir ha de començar amb el tipus de log (ldap, samba, syslog...).
 
 - Exemple de Output que enviem a ElasticSearch:
