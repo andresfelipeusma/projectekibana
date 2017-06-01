@@ -134,6 +134,13 @@ filter {
 }
 ```
 
+- Exemple creació de una pattern per al timestamp de radius (**/opt/logstash/patterns/radius**):
+
+```
+RADIUSTIMESTAMP %{SYSLOGTIMESTAMP} %{YEAR}
+```
+
+
 - Radius logs:
 
 ```
@@ -211,12 +218,6 @@ filter {
    }
  }
 }
-```
-
-- Exemple creació de una pattern per al timestamp de radius (**/opt/logstash/patterns/radius**):
-
-```
-RADIUSTIMESTAMP %{SYSLOGTIMESTAMP} %{YEAR}
 ```
 
 - Altres logs de Radius:
