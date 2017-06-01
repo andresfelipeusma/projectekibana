@@ -45,3 +45,76 @@ output {
   ...
 }
 ```
+
+Podem crear 3 fitxers:
+
+- **/etc/logstash/conf.d/01-filebeat-input.conf**
+
+```
+input {
+  beats {
+    port => 5044
+    ssl => true
+    ssl_certificate => "/etc/pki/tls/certs/logstash-forwarder.crt"
+    ssl_key => "/etc/pki/tls/private/logstash-forwarder.key"
+  }
+}
+```
+
+- **/etc/logstash/conf.d/10-filtrat.conf**
+
+```
+filter {
+ if [type] == "samba" {
+  grok {
+    add_tag => ["samba","grooked"]
+    match =>{ "message" => "\[%{SAMBATIME:samba_timestamp},%{SPACE}%{NUMBER:severity_code}\]%{SPACE}%{GREEDYDATA:samba_class}%{SPACE}%{GREEDYDATA:samba_message}" }
+    patterns_dir => ["/opt/logstash/patterns"]
+   }
+ }
+} 
+```
+
+- **/etc/logstash/conf.d/30-output-elasticsearch.conf**
+
+```
+output {
+  elasticsearch { hosts => ["localhost:9200"]
+    hosts => "localhost:9200"
+    manage_template => false
+    index => "%{[@metadata][beat]}-%{+YYYY.MM.dd}"
+    document_type => "%{[@metadata][type]}"
+  }
+}
+```
+
+O podem tenir tot en un mateix fitxer, això es indiferent per a Logstash:
+
+- **/etc/logstash/conf.d/00-tot.conf**
+```
+input {
+  beats {
+    port => 5044
+    ssl => true
+    ssl_certificate => "/etc/pki/tls/certs/logstash-forwarder.crt"
+    ssl_key => "/etc/pki/tls/private/logstash-forwarder.key"
+  }
+}
+filter {
+ if [type] == "samba" {
+  grok {
+    add_tag => ["samba","grooked"]
+    match =>{ "message" => "\[%{SAMBATIME:samba_timestamp},%{SPACE}%{NUMBER:severity_code}\]%{SPACE}%{GREEDYDATA:samba_class}%{SPACE}%{GREEDYDATA:samba_message}" }
+    patterns_dir => ["/opt/logstash/patterns"]
+   }
+ }
+} 
+output {
+  elasticsearch { hosts => ["localhost:9200"]
+    hosts => "localhost:9200"
+    manage_template => false
+    index => "%{[@metadata][beat]}-%{+YYYY.MM.dd}"
+    document_type => "%{[@metadata][type]}"
+  }
+}
+```
