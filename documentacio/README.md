@@ -1,4 +1,4 @@
-# Documentació
+## Index Documentació
 
 En aquest apartat podem trobar tota la documentació de les tecnologies 
 utilitzades.
