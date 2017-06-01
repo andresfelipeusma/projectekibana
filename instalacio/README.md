@@ -44,7 +44,11 @@ Finalment iniciem el servei logstash, ``systemct start Logstash.service``.
 
 ## Instalació del Index Filebeat.
 Descarreguem el paquet ``wget https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-5.1.1-x86_64.rpm`` i 
-ho instalem ``rpm -ivh filebeat-5.1.1-x86_64.rpm``.
+ho instalem ``rpm -ivh filebeat-5.1.1-x86_64.rpm``. No hem d'iniciar el servei Filebeat al servidor, només al client.
+
+Ara que ja hem instal·lat les tecnologies necesaries, anem a configurar-les:
+
+[Configuracions](../configuracions/)
 
 Fonts:
 
