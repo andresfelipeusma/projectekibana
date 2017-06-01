@@ -1,7 +1,7 @@
 ## Index documentació
 
 En aquest apartat podem trobar tota la documentació de les tecnologies 
-utilitzades.
+utilitzades:
 
 - [ElasticSearch](elasticsearch/ElasticSearch.md)
 - [Logstash](logstash/Logstash.md)

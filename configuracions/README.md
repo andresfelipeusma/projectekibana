@@ -1,5 +1,7 @@
 ## Index configuracions de les tecnologies utilitzades
 
+En aquest apartat podem trobar les configuracions utilitzades:
+
 - [ElasticSearch](ElasticSearch.md)
 - [Logstash](Logstash.md)
 - [Kibana](Kibana.md)
