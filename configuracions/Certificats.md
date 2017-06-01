@@ -50,3 +50,8 @@ openssl x509 -CA CA.crt -CAkey CAkey.pem -req -in server.req -days 365 -sha256 -
 ```
 curl -v --cacert ca.crt https://10.250.100.190:5044
 ```
+
+Fonts:
+
+[Elastic SSL](https://www.elastic.co/guide/en/beats/filebeat/current/configuring-ssl-logstash.html)
+[Tutorial Configuració Certs](https://www.digitalocean.com/community/tutorials/how-to-install-elasticsearch-logstash-and-kibana-elk-stack-on-ubuntu-14-04#generate-ssl-certificates)
