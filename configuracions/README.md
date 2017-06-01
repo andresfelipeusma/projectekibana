@@ -1,4 +1,4 @@
-## Index Configuracions de les tecnologies utilitzades
+## Index configuracions de les tecnologies utilitzades
 
 - [ElasticSearch](ElasticSearch.md)
 - [Logstash](Logstash.md)
