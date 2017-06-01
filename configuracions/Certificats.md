@@ -44,3 +44,9 @@ subjectAltName = IP: ip_servidor_kibana
 ```
 openssl x509 -CA CA.crt -CAkey CAkey.pem -req -in server.req -days 365 -sha256 -extfile ca.conf -CAcreateserial -out server.crt
 ```
+
+- 6é. Validar el certificat:
+
+```
+curl -v --cacert ca.crt https://10.250.100.190:5044
+```
