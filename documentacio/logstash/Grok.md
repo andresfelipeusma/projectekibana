@@ -212,7 +212,7 @@ filter {
 }
 ```
 
--Exemple creació de una pattern per al timestamp de radius (**/opt/logstash/patterns/radius**):
+- Exemple creació de una pattern per al timestamp de radius (**/opt/logstash/patterns/radius**):
 
 ```
 RADIUSTIMESTAMP %{SYSLOGTIMESTAMP} %{YEAR}
