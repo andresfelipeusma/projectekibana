@@ -1,4 +1,5 @@
 # Nginx configuració
+
 Del fitxer **/etc/nginx/nginx.conf** esborrem el block ``server{}``.
 Creem el fitxer **/etc/nginx/conf.d/kibana.conf** per poder afegir una nova virtual host
 i afegim el següent bloc:
@@ -24,5 +25,7 @@ server {
 ```
 
 Creem les creedencials per autenticar-nos ``htpasswd -c /etc/nginx/.kibana-user admin``.
+
 Finalment iniciem el servei nginx. 
-Nota: cal tenir el http apagat per que pugui funcionar el proxy.
+
+Nota: *cal tenir el http apagat per que pugui funcionar nginx*.
