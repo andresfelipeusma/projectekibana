@@ -158,3 +158,8 @@ Editem el fitxer de configuració **/etc/filebeat/filebeat.yml**:
       template.path: "filebeat.template.json"  
       template.overwrite: false
 ```
+
+Fonts:
+
+- [Web Oficial ELK](https://www.elastic.co/guide/index.html)
+- [Tutorial Instalació](https://www.digitalocean.com/community/tutorials/how-to-use-logstash-and-kibana-to-centralize-logs-on-centos-6)
