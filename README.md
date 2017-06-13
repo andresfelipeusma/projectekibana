@@ -10,7 +10,7 @@ Cadascun es pot utilitzar com a eina independent però la unió d'aquests crea u
 
 ## Index
 * [Instal·lació](instalacio)
- * [Com instalar el conjunt ELK](instalacio/README.md)
+	* [Com instalar el conjunt ELK](instalacio/README.md)
 * [Configuracions](configuracions)
 * [Documentació](documentacio)
 * [Presentació](presentacio)
