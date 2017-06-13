@@ -10,7 +10,7 @@ Cadascun es pot utilitzar com a eina independent però la unió d'aquests crea u
 
 ![esquema_estructura](imatge/elk_esquema.png "Estructura ELK")
 
-## Index
+## Index del repositori
 * [Instal·lació](instalacio)
 	* [Com instalar el conjunt ELK](instalacio/README.md)
 
