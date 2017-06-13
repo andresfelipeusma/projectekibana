@@ -9,7 +9,8 @@ fa el paper de servidor de recerques on s'emmagatzemen les dades ja optimitzades
 Cadascun es pot utilitzar com a eina independent però la unió d'aquests crea una combinació perfecta per a la gestió de registres.
 
 ## Index
-- [Instal·lació](instalacio)
-- [Configuracions](configuracions)
-- [Documentació](documentacio)
-- [Presentació](presentacio)
+* [Instal·lació](instalacio)
+ * [Com instalar el conjunt ELK](instalacio/README.md)
+* [Configuracions](configuracions)
+* [Documentació](documentacio)
+* [Presentació](presentacio)
