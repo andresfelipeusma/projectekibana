@@ -29,4 +29,7 @@ Cadascun es pot utilitzar com a eina independent però la unió d'aquests crea u
 
 * [Presentació](presentacio)
 
-Informació extreta de la [pàgina oficial de ELK](https://www.elastic.co/guide/index.html)
+Instalació i configuració extreta de diversos tutorials [Digital Ocean Tutorial](https://www.digitalocean.com/community/tutorials/how-to-use-logstash-and-kibana-to-centralize-logs-on-centos-6),
+[Logz.io](https://logz.io/learn/complete-guide-elk-stack/)...
+
+Documentació extreta de la [pàgina oficial de ELK](https://www.elastic.co/guide/index.html)
