@@ -35,3 +35,9 @@ Instalació i configuració extreta de diversos tutorials [Digital Ocean Tutoria
 [Logz.io](https://logz.io/learn/complete-guide-elk-stack/)...
 
 Documentació extreta de la [pàgina oficial de ELK](https://www.elastic.co/guide/index.html).
+
+Andrés Felipe Usma Montenegro
+
+2 hisix
+
+2016-2017
