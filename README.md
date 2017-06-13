@@ -11,11 +11,20 @@ Cadascun es pot utilitzar com a eina independent però la unió d'aquests crea u
 ## Index
 * [Instal·lació](instalacio)
 	* [Com instalar el conjunt ELK](instalacio/README.md)
+
 * [Configuracions](configuracions)
 	* [Com configurar Filebeat](configuracions/Filebeat.md#configuració-filebeat-al-client)
 	* [Com configurar Logstash](configuracions/Logstash.md#logstash-configuració)
 	* [Com configurar Elastic Search](configuracions/ElasticSearch.md#elastic-search-configuració-port-9200)
 	* [Com configurar Kibana](configuracions/Kibana.md#kibana-configuració-port-5601)
-	* [Com configurar el certificat](configuracions/Certificats.md#creació-del-certificat-ssl-autosignat)
-* [Documentació](documentacio)
+	* [Com configurar el Certificat](configuracions/Certificats.md#creació-del-certificat-ssl-autosignat)
+
+* [Documentacions](documentacio)
+	* [Documentació Filebeat](documentacio/filebeat/Filebeat.md#beats)
+	* [Documentació Logstash](documentacio/logstash/Logstash.md#logstash)
+	* [Documentació Grok](documentacio/logstash/Grok.md#grok-i-el-seu-filtrat)	
+	* [Documentació Elastic Search](documentacio/elasticsearch/ElasticSearch.md#elasticsearch)
+	* [Documentació Kibana](documentacio/kibana/Kibana.md#kibana)
+	* [Documentació Kibana](documentacio/kibana/kibana/Nginx.md#nginx-configuració)
+
 * [Presentació](presentacio)
