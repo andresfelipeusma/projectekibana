@@ -1,4 +1,7 @@
-# Projecte ELK
+# Projecte Elastic Search, Logstash, Kibana
 
-En aquest repositori aniré pujant la documentació del meu projecte final
-de hisx2 Elastic Search, Logstash, Kibana.
+## Index
+- [Instal·lació](instalacio/README.md)
+- [Configuracions](configuracions/README.md)
+- [Documentació](documentacio/README.md)
+- [Presentació](presentacio)
