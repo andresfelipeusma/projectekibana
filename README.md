@@ -1,11 +1,11 @@
 # Projecte Elastic Search, Logstash, Kibana
 
 ## Introducció
-ELK stack son tres tecnologies que juntes poden oferir deteccions de incidències en una organització de gran mida. 
-**Logstash** es el parsejador de les dades que provenen de diverses fonts i que filtrades 
-podem prescindir d'alguna part del missatge que no es important. **ElasticSearch**
-fa el paper de servidor de recerques on s'emmagatzemen les dades ja optimitzades per la indexació. 
-**Kibana** es el front-end per a la visualització i anàlisi de dades. 
+ELK stack son un conjunt de tecnologies que juntes poden oferir deteccions de incidències en una organització de gran mida.
+**Filebeat** s'encarregat d'enviar els registres desde un client, a un fitxer, Elastic Search o Logstash.
+**Logstash** es el parsejador de les dades que provenen de diverses fonts i que filtrades podem prescindir d'alguna part del missatge que no es important. 
+**Elastic Search** fa el paper de servidor de recerques on s'emmagatzemen les dades ja optimitzades per la indexació. 
+**Kibana** serveix per analitzar, crear grafics, i visualitzar en temps real els registres rebuts de les bases de dades de Elastic Search.
 Cadascun es pot utilitzar com a eina independent però la unió d'aquests crea una combinació perfecta per a la gestió de registres.
 
 ![esquema_estructura](imatge/elk_esquema.png "Estructura ELK")
