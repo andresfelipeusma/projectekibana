@@ -28,3 +28,5 @@ Cadascun es pot utilitzar com a eina independent però la unió d'aquests crea u
 	* [Documentació Kibana](documentacio/kibana/kibana/Nginx.md#nginx-configuració)
 
 * [Presentació](presentacio)
+
+[Pagina Oficial Elastic Search](https://www.elastic.co/guide/index.html)
