@@ -1,7 +1,7 @@
 # Projecte Elastic Search, Logstash, Kibana
 
 ## Index
-- [Instal·lació](instalacio/README.md)
-- [Configuracions](configuracions/README.md)
-- [Documentació](documentacio/README.md)
+- [Instal·lació](instalacio)
+- [Configuracions](configuracions)
+- [Documentació](documentacio)
 - [Presentació](presentacio)
