@@ -2,7 +2,7 @@
 
 ## Introducció
 ELK stack son un conjunt de tecnologies que juntes poden oferir deteccions de incidències en una organització de gran mida.
-**Filebeat** s'encarregat d'enviar els registres desde un client, a un fitxer, Elastic Search o Logstash.
+**Filebeat** s'encarrega d'enviar els registres desde un client, a un fitxer, a Elastic Search o a Logstash.
 **Logstash** es el parsejador de les dades que provenen de diverses fonts i que filtrades podem prescindir d'alguna part del missatge que no es important. 
 **Elastic Search** fa el paper de servidor de recerques on s'emmagatzemen les dades ja optimitzades per la indexació. 
 **Kibana** serveix per analitzar, crear grafics, i visualitzar en temps real els registres rebuts de les bases de dades de Elastic Search.
