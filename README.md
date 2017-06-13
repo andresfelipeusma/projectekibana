@@ -29,4 +29,4 @@ Cadascun es pot utilitzar com a eina independent però la unió d'aquests crea u
 
 * [Presentació](presentacio)
 
-[Pagina Oficial Elastic Search](https://www.elastic.co/guide/index.html)
+Informació extreta de la [pàgina oficial de ELK](https://www.elastic.co/guide/index.html)
