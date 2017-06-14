@@ -15,14 +15,90 @@
 </section>
 <section class="slide level1">
 
-<p>ELK stack son un conjunt de tecnologies que juntes poden oferir deteccions de incidències en una organització de gran mida.</p>
+<p>ELK son un conjunt de tecnologies que juntes poden oferir deteccions de incidències en organitzacions de gran mida.</p>
 <ul class="incremental">
 <li><p>Filebeat s'encarrega d'enviar els registres desde un client, a un fitxer, a Elastic Search o a Logstash.</p></li>
-<li><p>Logstash es el parsejador de les dades que provenen de diverses fonts i que filtrades podem prescindir d'alguna part del missatge que no es important.</p></li>
+<li><p>Logstash es el parsejador de les dades que provenen de Filebeat i que filtrades podem prescindir d'alguna part del missatge que no es important.</p></li>
 <li><p>Elastic Search fa el paper de servidor de recerques on s'emmagatzemen les dades ja optimitzades per la indexació.</p></li>
-<li><p>Kibana serveix per analitzar, crear grafics, i visualitzar en temps real els registres rebuts de les bases de dades de Elastic Search.</p></li>
+<li><p>Kibana serveix per analitzar, crear gràfics, i visualitzar en temps real els registres rebuts de les bases de dades de Elastic Search.</p></li>
 <li><p>Cadascun es pot utilitzar com a eina independent però la unió d'aquests crea una combinació perfecta per a la gestió de registres.</p></li>
 </ul>
+</section>
+<section class="slide level1">
+
+<p><strong>Filebeat</strong></p>
+<p>FileBeat té com a funció rebre els registres de directoris o directament de fitxers per a finalment enviar-los a Elastic Search o Logstash. El funcionament es el següent, quan iniciem FileBeat fa una recerca de les rutes que tu l'hi afegeixes als prospectors. Per cada fitxer que troba FileBeat inicia un recol·lector. Cada recol·lector llegeix un fitxer de log i finalment l'envia a Logstash.</p>
+<p><strong>Prospectors:</strong> son els responsables de gestionar els recol·lectors i trobar totes les fonts que ha de llegir.</p>
+<p>Exemple (/etc/filebeat/filebeat.yml):</p>
+<pre><code>filebeat.prospectors:
+  input_type: log  
+  paths:  
+    - /var/log/radius.log  
+    - /var/log/radius_detail.log  
+  document_type: radius</code></pre>
+<p><strong>Harvester/Recol·lector:</strong> llegeixen el contingut dels fitxers de logs. Llegeix línia a línia el fitxer les processa i les envia al output(Elastic Search, fitxer de text...).</p>
+</section>
+<section class="slide level1">
+
+<p><strong>Logstash</strong></p>
+<p>Logstash és una plataforma de codi obert que ens permet fer una recol·lecció de dades amb la capacitat de canalitzar en temps real. Pot unificar dinàmicament dades de diverses fonts i normalitzar-les.</p>
+<p>Originalment Logstash va impulsar la innovació en la recopilació de registes, però les seves capacitats s'extendeixen molt més. Qualsevol tipus d'event es pot transformar en una amplia gama d'inputs, filtres i output plugins.</p>
+<p>El procès de logstash es basa en 3 etapes: <strong>inputs -&gt; filtres -&gt; output</strong>.</p>
+</section>
+<section class="slide level1">
+
+<p><strong>Inputs</strong>: utilitzats per rebre registres i guardar-los a Logstash. Hi han varis tipus de Inputs però els més usats són fitxers (llegeix les dades a partir de un fitxer del sistema), syslog (escolta el port 514 per missatges syslogs i els parseja mitjançant el format RFC3164), Beats (processa els registres enviats per Filebeat).</p>
+<p>Exemple de <em>Input</em>:</p>
+<pre><code>input {  
+  beats {  
+    port =&gt; 5044  
+    ssl =&gt; true  
+    ssl_certificate =&gt; &quot;/var/tmp/logstash-forwarder.crt&quot;  
+    ssl_key =&gt; &quot;/var/tmp/private/logstash-forwarder.key&quot;  
+  }  
+}  </code></pre>
+<p>Bàsicament al input, assignem quin port escoltem per rebre els registres i si volem tenir un trànsit segur mitjançant ssl.</p>
+</section>
+<section class="slide level1">
+
+<p><strong>Filtres</strong>: serveixen per editar els logs que rebem, aquests logs han de complir el <em>match</em> que nosaltres creem mitjançant <strong>Grok</strong>.</p>
+<p><strong>Grok</strong>: aquesta eina ens permet organitzar els logs que rebem de manera estructurada i arbitrària.</p>
+<p>Exemple log de <em>Samba</em>:</p>
+<pre><code>[2017/05/07 03:48:30, 0] lib/util_sock.c:1491 getpeername failed. 
+Error was Transport endpoint is not connected</code></pre>
+<p>Com hauria de ser el <em>Grok</em>:</p>
+<pre><code>&quot;\[%{SAMBATIME:samba_timestamp}, %{NUMBER:severity_code}\] 
+%{GREEDYDATA:samba_class}. %{GREEDYDATA:samba_message}&quot; </code></pre>
+</section>
+<section class="slide level1">
+
+<p>Exemple de <em>Filtre</em>:</p>
+<pre><code>filter {
+ if [type] == &quot;samba&quot; {
+  grok {
+    add_tag =&gt; [&quot;samba&quot;,&quot;grooked&quot;]
+    match =&gt;{ &quot;message&quot; =&gt; &quot;\[%{SAMBATIME:samba_timestamp},
+    %{NUMBER:severity_code}\]%{GREEDYDATA:samba_class}
+    %{GREEDYDATA:samba_message}&quot; }
+    patterns_dir =&gt; [&quot;/opt/logstash/patterns&quot;]
+   }
+ }
+}</code></pre>
+<p>En aquesta etapa assignem el tipus del log, podem afegir tags(després es poden veure en Kibana), tenir un directori amb plantilles de Grok que generem nosaltres, i finalment el camp <em>match</em> que si tot ha anat correcte ens transformará l'estructura del registre.</p>
+</section>
+<section class="slide level1">
+
+<p><strong>Output</strong>: és l'últim etapa pel qual pasa el registre. Tenim diferents opcions a on enviar els registres modificats, ja sigui a un fitxer local, a Elastic Search o a l'aplicació Graphite.</p>
+<p>Exemple de <em>Output</em>:</p>
+<pre><code>output {
+  elasticsearch { hosts =&gt; [&quot;localhost:9200&quot;]
+    hosts =&gt; &quot;localhost:9200&quot;
+    manage_template =&gt; false
+    index =&gt; &quot;%{[@metadata][beat]}-%{+YYYY.MM.dd}&quot;
+    document_type =&gt; &quot;%{[@metadata][type]}&quot;
+  }
+}</code></pre>
+<p>En aquest exemple enviem els registres a Elastic Search, definint el host i el port on es troba Elastic Search treballant, afegim un index al registre ja que es necessari per Elastic Search i finalment el tipus de document que es.</p>
 </section>
 <!-- {{{{ dzslides core
 #

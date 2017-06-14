@@ -63,12 +63,6 @@ utilitzar la capacitat de cerca inversa (Percolator) per comparar els moviments
 de preus amb les consultes de clients i eventualment enviar alertes al client
 una vegada es trobin els resultats.
 
-## Fitxer de configuració ElasticSearch
-
-En aquest fitxer no manipularem casi res ja que tot ve per defecte però
-si volem canviar el port que escolta, canviar la ruta dels logs que genera
-ElasticSearch, podem editar-ho des de aquí **/etc/elasticsearch/elasticsearch.yml**.
-
 Podem fer consultes a la BD de ElasticSEarch amb l'ordre curl com per exemple:
 
 Mostrar els index que tenim a la BD de ElasticSearch:
