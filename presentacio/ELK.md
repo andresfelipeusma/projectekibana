@@ -209,3 +209,6 @@ mitjançant gràfics de barres, gràfics circulars, tag clouds...
 - _Dashboard_, bàsicament en aquest apartat projecta una col·lecció de 
 visualitzacions gravades, pots afegir els gràfics que vulguis, escriure anotacions...
 
+---
+
+**Gràcies per la vostra atenció.**
