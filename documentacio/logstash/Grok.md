@@ -155,7 +155,7 @@ Wed May 10 13:24:20 2017 : Info: rlm_sql (sql_mysql): Attempting to connect rlm_
 filter {
   if [type] == "radius" {
     grok {
-      match => { "message" => "%{RADIUSTIMESTAMP}%{SPACE}:%{SPACE}%{WORD:radius_type}:%{SPACE}%{DATA:radius_class}:%{SPACE}%{GREEDYDATA:radius_message}" }
+      match => { ["%{RADIUSTIMESTAMP:radius_timestamp}%{SPACE}:%{SPACE}%{WORD:radius_type}:%{SPACE}%{DATA:radius_class}:%{SPACE}%{GREEDYDATA:radius_message}","%{RADIUSTIMESTAMP:radius_timestamp}%{SPACE}:%{SPACE}%{WORD:radius_type}:%{SPACE}%{GREEDYDATA:radius_message}"] }
       add_tag => "radius"
       patterns_dir => ["/opt/logstash/patterns"]
     }
@@ -166,7 +166,7 @@ filter {
 }
 ```
 
-- Radius logs amb detalls:
+- Radius logs de access:
 
 ```
 Tue Apr 18 07:37:13 2017
@@ -199,28 +199,20 @@ Tue Apr 18 07:37:22 2017
 	Message-Authenticator = 0x5f36c09c78168951f4bf0cd85a89865b
 ```
 
-- Exemple filtre radius amb detalls:
+- Exemple filtre radius access:
 
 ```
 filter {
- if [type] == "radius" {
+ if [type] == "radius_access" {
   grok {
-    match =>{ "message" => "%{RADIUSTIMESTAMP:radius_timestamp}%{SPACE}Packet-Type%{SPACE}=%{SPACE}
-							%{GREEDYDATA:Packet_Type}%{SPACE}User-Name%{SPACE}=%{SPACE}\"%{USERNAME:User_Name}\"
-							%{SPACE}NAS-IP-Address%{SPACE}=%{SPACE}%{IPV4:NAS_IP_Address}%{SPACE}NAS-Identifier
-							%{SPACE}=%{SPACE}\"%{GREEDYDATA:NAS_Identifier}\"%{SPACE}NAS-Port%{SPACE}=%{SPACE}
-							%{INT:NAS_Port}%{SPACE}Called-Station-Id%{SPACE}=%{SPACE}\"%{GREEDYDATA:Called_Station_Id}\"
-							%{SPACE}Calling-Station-Id%{SPACE}=%{SPACE}\"%{GREEDYDATA:Calling_Station_Id}\"%{SPACE}Framed-MTU
-							%{SPACE}=%{SPACE}%{INT:Framed_MTU}%{SPACE}NAS-Port-Type%{SPACE}=%{SPACE}%{GREEDYDATA:NAS_Port_Type}
-							%{SPACE}Connect-Info%{SPACE}=%{SPACE}\"%{GREEDYDATA:Connect_Info}\"%{SPACE}EAP-Message%{SPACE}=%{SPACE}
-							%{GREEDYDATA:EAP_Message}%{SPACE}Message-Authenticator%{SPACE}=%{SPACE}%{GREEDYDATA:Message_Authenticator}"}
+    match =>{ "message" => "%{RADIUSTIMESTAMP:radius_timestamp}%{SPACE}Packet-Type%{SPACE}=%{SPACE}%{GREEDYDATA:Packet_Type}%{SPACE}User-Name%{SPACE}=%{SPACE}\"%{USERNAME:User_Name}\"%{SPACE}NAS-IP-Address%{SPACE}=%{SPACE}%{IPV4:NAS_IP_Address}%{SPACE}NAS-Identifier%{SPACE}=%{SPACE}\"%{GREEDYDATA:NAS_Identifier}\"%{SPACE}NAS-Port%{SPACE}=%{SPACE}%{INT:NAS_Port}%{SPACE}Called-Station-Id%{SPACE}=%{SPACE}\"%{GREEDYDATA:Called_Station_Id}\"%{SPACE}Calling-Station-Id%{SPACE}=%{SPACE}\"%{GREEDYDATA:Calling_Station_Id}\"%{SPACE}Framed-MTU%{SPACE}=%{SPACE}%{INT:Framed_MTU}%{SPACE}NAS-Port-Type%{SPACE}=%{SPACE}%{GREEDYDATA:NAS_Port_Type}%{SPACE}Connect-Info%{SPACE}=%{SPACE}\"%{GREEDYDATA:Connect_Info}\"%{SPACE}EAP-Message%{SPACE}=%{SPACE}%{GREEDYDATA:EAP_Message}%{SPACE}Message-Authenticator%{SPACE}=%{SPACE}%{GREEDYDATA:Message_Authenticator}"}
     patterns_dir => ["/opt/logstash/patterns"]
    }
  }
 }
 ```
 
-- Altres logs de Radius:
+- Logs de radius amb detalls:
 
 ```
 Thu Apr 20 07:56:29 2017
@@ -261,16 +253,20 @@ Thu Apr 20 08:19:35 2017
         Timestamp = 1492669175
 ```
 
-- Exemple filtre radius on ``Acct-Status-Type = Start`` :
+- Exemple filtre radius on ``Acct-Status-Type = Start`` o ``Acct-Status-Type = Stop``  :
 
 ```
-%{RADIUSTIMESTAMP:radius_timestamp}%{SPACE}Acct-Session-Id%{SPACE}=%{SPACE}\"%{GREEDYDATA:Acct_Session_Id}\"%{SPACE}Acct-Status-Type%{SPACE}=%{SPACE}%{GREEDYDATA:Acct_Status_Type}%{SPACE}Acct-Authentic%{SPACE}=%{SPACE}%{GREEDYDATA:Acct_Authentic}%{SPACE}User-Name%{SPACE}=%{SPACE}\"%{GREEDYDATA:User_Name}\"%{SPACE}NAS-IP-Address%{SPACE}=%{SPACE}%{IPV4:NAS_IP_Address}%{SPACE}NAS-Identifier%{SPACE}=%{SPACE}\"%{GREEDYDATA:NAS_Identifier}\"%{SPACE}NAS-Port%{SPACE}=%{SPACE}%{INT:NAS_Port}%{SPACE}Called-Station-Id%{SPACE}=%{SPACE}\"%{GREEDYDATA:Called_Station_Id}\"%{SPACE}Calling-Station-Id%{SPACE}=%{SPACE}\"%{GREEDYDATA:Calling_Station_Id}\"%{SPACE}NAS-Port-Type%{SPACE}=%{SPACE}%{GREEDYDATA:NAS_Port_Type}%{SPACE}Connect-Info%{SPACE}=%{SPACE}\"%{GREEDYDATA:Connect_Info}\"%{SPACE}Acct-Unique-Session-Id%{SPACE}=%{SPACE}\"%{GREEDYDATA:Acct_Uniq_Sess_Id}\"%{SPACE}Timestamp%{SPACE}=%{SPACE}%{INT:timestamp}
-```
+filter {
+ if [type] == "radius_detall" {
+  grok {
+    match =>{ "message" => ["%{RADIUSTIMESTAMP:radius_timestamp}%{SPACE}Acct-Session-Id%{SPACE}=%{SPACE}\"%{GREEDYDATA:Acct_Session_Id}\"%{SPACE}Acct-Status-Type%{SPACE}=%{SPACE}%{GREEDYDATA:Acct_Status_Type}%{SPACE}Acct-Authentic%{SPACE}=%{SPACE}%{GREEDYDATA:Acct_Authentic}%{SPACE}User-Name%{SPACE}=%{SPACE}\"%{GREEDYDATA:User_Name}\"%{SPACE}NAS-IP-Address%{SPACE}=%{SPACE}%{IPV4:NAS_IP_Address}%{SPACE}NAS-Identifier%{SPACE}=%{SPACE}\"%{GREEDYDATA:NAS_Identifier}\"%{SPACE}NAS-Port%{SPACE}=%{SPACE}%{INT:NAS_Port}%{SPACE}Called-Station-Id%{SPACE}=%{SPACE}\"%{GREEDYDATA:Called_Station_Id}\"%{SPACE}Calling-Station-Id%{SPACE}=%{SPACE}\"%{GREEDYDATA:Calling_Station_Id}\"%{SPACE}NAS-Port-Type%{SPACE}=%{SPACE}%{GREEDYDATA:NAS_Port_Type}%{SPACE}Connect-Info%{SPACE}=%{SPACE}\"%{GREEDYDATA:Connect_Info}\"%{SPACE}Acct-Unique-Session-Id%{SPACE}=%{SPACE}\"%{GREEDYDATA:Acct_Uniq_Sess_Id}\"%{SPACE}Timestamp%{SPACE}=%{SPACE}%{INT:timestamp}
+", "%{RADIUSTIMESTAMP:radius_timestamp}%{SPACE}Acct-Session-Id%{SPACE}=%{SPACE}\"%{DATA:Acct_Session_Id}\"%{SPACE}Acct-Status-Type%{SPACE}=%{SPACE}%{WORD:Acct_Status_Type}%{SPACE}Acct-Authentic%{SPACE}=%{SPACE}%{WORD:Acct_Authentic}%{SPACE}User-Name%{SPACE}=%{SPACE}\"%{DATA:User_Name}\"%{SPACE}NAS-IP-Address%{SPACE}=%{SPACE}%{IP:NAS_IP_Address}%{SPACE}NAS-Identifier%{SPACE}=%{SPACE}\"%{DATA:NAS_Identifier}\"%{SPACE}NAS-Port%{SPACE}=%{SPACE}%{NUMBER:NAS_Port}%{SPACE}Called-Station-Id%{SPACE}=%{SPACE}\"%{DATA:Called_Station_Id}\"%{SPACE}Calling-Station-Id%{SPACE}=%{SPACE}\"%{MAC:Calling_Station_Id}\"%{SPACE}NAS-Port-Type%{SPACE}=%{SPACE}%{DATA:NAS_PortType}%{SPACE}Connect-Info%{SPACE}=%{SPACE}\"%{DATA:Connect_Info}\"%{SPACE}Acct-Session-Time%{SPACE}=%{SPACE}%{NUMBER:Acct_Session_Time}%{SPACE}Acct-Input-Packets%{SPACE}=%{SPACE}%{NUMBER:Acct_Input_Packets}%{SPACE}Acct-Output-Packets%{SPACE}=%{SPACE}%{NUMBER:Acct_Output_Packets}%{SPACE}Acct-Input-Octets%{SPACE}=%{SPACE}%{NUMBER:Acct_Input_Octets}%{SPACE}Acct-Output-Octets%{SPACE}=%{SPACE}%{NUMBER:Acct_Output_Octets}%{SPACE}Event-Timestamp%{SPACE}=%{SPACE}\"%{DATA:Event_Timestamp}\"%{SPACE}Acct-Terminate-Cause%{SPACE}=%{SPACE}%{DATA:Acct_Terminate_Cause}%{SPACE}Acct-Unique-Session-Id%{SPACE}=%{SPACE}\"%{DATA:Acct_Unique_Session_Id}\"%{SPACE}Timestamp%{SPACE}=%{SPACE}%{NUMBER:Timestamp}"]}
+    patterns_dir => ["/opt/logstash/patterns"]
+    add_tag => "radius_detallat"
+   }
+ }
+}
 
-- Exemple filtres radius on ``Acct-Status-Type = Stop`` :
-
-```
-%{RADIUSTIMESTAMP:radius_timestamp}%{SPACE}Acct-Session-Id%{SPACE}=%{SPACE}\"%{DATA:Acct_Session_Id}\"%{SPACE}Acct-Status-Type%{SPACE}=%{SPACE}%{WORD:Acct_Status_Type}%{SPACE}Acct-Authentic%{SPACE}=%{SPACE}%{WORD:Acct_Authentic}%{SPACE}User-Name%{SPACE}=%{SPACE}\"%{DATA:User_Name}\"%{SPACE}NAS-IP-Address%{SPACE}=%{SPACE}%{IP:NAS_IP_Address}%{SPACE}NAS-Identifier%{SPACE}=%{SPACE}\"%{DATA:NAS_Identifier}\"%{SPACE}NAS-Port%{SPACE}=%{SPACE}%{NUMBER:NAS_Port}%{SPACE}Called-Station-Id%{SPACE}=%{SPACE}\"%{DATA:Called_Station_Id}\"%{SPACE}Calling-Station-Id%{SPACE}=%{SPACE}\"%{MAC:Calling_Station_Id}\"%{SPACE}NAS-Port-Type%{SPACE}=%{SPACE}%{DATA:NAS_PortType}%{SPACE}Connect-Info%{SPACE}=%{SPACE}\"%{DATA:Connect_Info}\"%{SPACE}Acct-Session-Time%{SPACE}=%{SPACE}%{NUMBER:Acct_Session_Time}%{SPACE}Acct-Input-Packets%{SPACE}=%{SPACE}%{NUMBER:Acct_Input_Packets}%{SPACE}Acct-Output-Packets%{SPACE}=%{SPACE}%{NUMBER:Acct_Output_Packets}%{SPACE}Acct-Input-Octets%{SPACE}=%{SPACE}%{NUMBER:Acct_Input_Octets}%{SPACE}Acct-Output-Octets%{SPACE}=%{SPACE}%{NUMBER:Acct_Output_Octets}%{SPACE}Event-Timestamp%{SPACE}=%{SPACE}\"%{DATA:Event_Timestamp}\"%{SPACE}Acct-Terminate-Cause%{SPACE}=%{SPACE}%{DATA:Acct_Terminate_Cause}%{SPACE}Acct-Unique-Session-Id%{SPACE}=%{SPACE}\"%{DATA:Acct_Unique_Session_Id}\"%{SPACE}Timestamp%{SPACE}=%{SPACE}%{NUMBER:Timestamp}
 ```
 
 Com podem observar cada filtre que volem afegir ha de començar amb el tipus de log (ldap, samba, syslog...).
