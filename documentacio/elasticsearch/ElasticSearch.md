@@ -65,7 +65,7 @@ una vegada es trobin els resultats.
 
 Podem fer consultes a la BD de ElasticSEarch amb l'ordre curl com per exemple:
 
-Mostrar els index que tenim a la BD de ElasticSearch:
+Mostrar els index que tenim a la BD de Elastic Search:
  
 ``curl -XGET 'http://localhost:9200/filebeat-*/_search?pretty'``
 

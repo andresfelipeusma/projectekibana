@@ -154,3 +154,58 @@ Elastic Search es un tecnologia de recerca i anàlisis de codi obert bastant esc
 Permet emmagatzemar, trobar i analitzar grans volums de dades ràpidament i en temps real (casi). 
 Generalment s'utilitza com a tecnologia que potencia les aplicacions que tenen característiques de recerca complexes 
 i requisits.
+
+Característiques principals:
+
+_Near Realtime_, vol dir, funciona casi en temps real. 
+Això significa que hi ha una lleu latència (normalment un segon) entre 
+el temps que tu indexes un document fins el moment en que el pots cercar.
+
+_Index_ és una col·lecció de documents que tenen característiques similars. 
+S'identifica pel seu nom (ha de estar en minúscules) ja que es usat 
+per referir-se al index quan es fan recerques, actualitzacions o esborrar els documents que contenen.
+
+---
+
+_Type_, dins de un index pots definir un o més "types". Un "type" es 
+una categoria dels teus index on la semàntica depèn completament del usuari. 
+En general, es defineix un "type" per documents que tenen molts camps en comú.
+
+_Document_, és una unitat bàsica de informació que pots indexar. 
+Aquest document s'expressa en JSON i ha d'estar indexat/assignat en un "type" dins de un index.
+
+Podem fer consultes a la base de dades de Elastic Search utilitzant l'ordre _curl_:
+
+```
+curl -XGET 'http://localhost:9200/filebeat-*/_search?pretty' 
+```
+
+O esborrar un index:
+
+```
+curl -XDELETE 'localhost:9200/filebeat-2017.04.26'
+```
+
+---
+
+**Kibana**
+
+Kibana és una eina visual que analitza i visualitza dades, 
+dissenyada per treballar amb Elastic Search. S'utilitza per cercar, 
+veure i interactuar amb dades emmagatzemades als índexs de ElasticSearch. 
+Pots realitzar anàlisi de dades avançades i visualitzar-les "fàcilment" 
+en una gran varietat de gràfics, taules, mapes...
+
+Té tres apartats important:
+
+- _Discover_, en aquest apartat tens accés interactiu a tot document 
+indexat que coincideix amb la plantilla seleccionada. També pots obtenir 
+estadístiques de valors de camps, filtrar els documents amb el timestamp que tenen, 
+filtrar camps rebuts pel ElasticSearch...
+
+- _Visualize_, permet visualitzar de diferent formes els registres rebuts, ja sigui 
+mitjançant gràfics de barres, gràfics circulars, tag clouds...
+
+- _Dashboard_, bàsicament en aquest apartat projecta una col·lecció de 
+visualitzacions gravades, pots afegir els gràfics que vulguis, escriure anotacions...
+
