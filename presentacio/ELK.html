@@ -7,18 +7,18 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<section id="elastic-search-logstash-kibana-elk" class="slide level1">
-<h1>Elastic Search, Logstash, Kibana (ELK)</h1>
+<section id="gestió-de-logs-amb-elk-elastic-search-logstash-kibana" class="slide level1">
+<h1>Gestió de logs amb ELK (Elastic Search, Logstash, Kibana)</h1>
 <p><strong>Alumne:</strong> Andrés Felipe Usma Montenegro<br />
 <strong>Clase:</strong> 2 ASIX<br />
 <strong>Curs:</strong> 2016-2017</p>
 </section>
 <section class="slide level1">
 
-<p>ELK son un conjunt de tecnologies que juntes poden oferir deteccions de incidències en organitzacions de gran mida.</p>
+<p>ELK són un conjunt de tecnologies que juntes poden oferir deteccions de incidències en organitzacions de gran mida.</p>
 <ul class="incremental">
 <li><p>Filebeat s'encarrega d'enviar els registres desde un client, a un fitxer, a Elastic Search o a Logstash.</p></li>
-<li><p>Logstash es el parsejador de les dades que provenen de Filebeat i que filtrades podem prescindir d'alguna part del missatge que no es important.</p></li>
+<li><p>Logstash és el parsejador de les dades que provenen de Filebeat i que filtrades podem prescindir d'alguna part del missatge que no es important.</p></li>
 <li><p>Elastic Search fa el paper de servidor de recerques on s'emmagatzemen les dades ja optimitzades per la indexació.</p></li>
 <li><p>Kibana serveix per analitzar, crear gràfics, i visualitzar en temps real els registres rebuts de les bases de dades de Elastic Search.</p></li>
 <li><p>Cadascun es pot utilitzar com a eina independent però la unió d'aquests crea una combinació perfecta per a la gestió de registres.</p></li>
@@ -27,7 +27,7 @@
 <section class="slide level1">
 
 <p><strong>Filebeat</strong></p>
-<p>FileBeat té com a funció rebre els registres de directoris o directament de fitxers per a finalment enviar-los a Elastic Search o Logstash. El funcionament es el següent, quan iniciem FileBeat fa una recerca de les rutes que tu l'hi afegeixes als prospectors. Per cada fitxer que troba FileBeat inicia un recol·lector. Cada recol·lector llegeix un fitxer de log i finalment l'envia a Logstash.</p>
+<p>El funcionament és el següent, quan iniciem FileBeat fa una recerca de les rutes que tu l'hi afegeixes als prospectors. Per cada fitxer que troba FileBeat inicia un recol·lector. Cada recol·lector llegeix un fitxer de log i finalment l'envia a Logstash.</p>
 <p><strong>Prospectors:</strong> son els responsables de gestionar els recol·lectors i trobar totes les fonts que ha de llegir(fitxers...).</p>
 <p>Exemple (/etc/filebeat/filebeat.yml):</p>
 <pre><code>filebeat.prospectors:
@@ -47,7 +47,7 @@
 </section>
 <section class="slide level1">
 
-<p><strong>Inputs</strong>: utilitzats per rebre registres i guardar-los a Logstash. Hi han varis tipus de Inputs però els més usats són fitxers (llegeix les dades a partir de un fitxer del sistema), syslog (escolta el port 514 per missatges syslogs i els parseja mitjançant el format RFC3164), Beats (processa els registres enviats per Filebeat).</p>
+<p><strong>Inputs</strong>: utilitzats per definir d'on provenen els registres. Hi han varis tipus de Inputs però els més usats són fitxers (llegeix les dades a partir de un fitxer del sistema), syslog (escolta el port 514 per missatges syslogs i els parseja mitjançant el format RFC3164), Beats (processa els registres enviats per Filebeat).</p>
 <p>Exemple de <em>Input</em>:</p>
 <pre><code>input {  
   beats {  
@@ -61,7 +61,7 @@
 </section>
 <section class="slide level1">
 
-<p><strong>Filtres</strong>: serveixen per editar els logs que rebem, aquests logs han de complir el <em>match</em> que nosaltres creem mitjançant <strong>Grok</strong>.</p>
+<p><strong>Filtres</strong>: serveixen per transformar els logs que rebem, aquests logs han de complir el <em>match</em> que nosaltres creem mitjançant <strong>Grok</strong>.</p>
 <p><strong>Grok</strong>: aquesta eina ens permet organitzar els logs que rebem de manera estructurada i arbitrària.</p>
 <p>Exemple log de <em>Samba</em>:</p>
 <pre><code>[2017/05/07 03:48:30, 0] lib/util_sock.c:1491 getpeername failed. 
@@ -88,7 +88,7 @@ Error was Transport endpoint is not connected</code></pre>
 </section>
 <section class="slide level1">
 
-<p><strong>Output</strong>: és l'ultima etapa pel qual pasa el registre. Tenim diferents opcions a on enviar els registres modificats, ja sigui a un fitxer local, a Elastic Search o a l'aplicació Graphite.</p>
+<p><strong>Output</strong>: és l'ultima etapa per la qual passa el registre. Tenim diferents opcions a on enviar els registres modificats, ja sigui a un fitxer local, a Elastic Search o a l'aplicació Graphite.</p>
 <p>Exemple de <em>Output</em>:</p>
 <pre><code>output {
   elasticsearch { hosts =&gt; [&quot;localhost:9200&quot;]
@@ -103,7 +103,7 @@ Error was Transport endpoint is not connected</code></pre>
 <section class="slide level1">
 
 <p><strong>Elastic Search</strong></p>
-<p>Elastic Search es un tecnologia de recerca i anàlisis de codi obert bastant escalable. Permet emmagatzemar, trobar i analitzar grans volums de dades ràpidament i en temps real (casi). Generalment s'utilitza com a tecnologia que potencia les aplicacions que tenen característiques de recerca complexes i requisits.</p>
+<p>Elastic Search és un tecnologia de recerca i anàlisis bastant escalable. Permet emmagatzemar, trobar i analitzar grans volums de dades ràpidament i en temps real (casi). Generalment s'utilitza com a tecnologia que potencia les aplicacions que tenen característiques de recerca complexes i requisits.</p>
 <p>Característiques principals:</p>
 <p><em>Near Realtime</em>, vol dir, funciona casi en temps real. Això significa que hi ha una lleu latència (normalment un segon) entre el temps que tu indexes un document fins el moment en que el pots cercar.</p>
 <p><em>Index</em> és una col·lecció de documents que tenen característiques similars. S'identifica pel seu nom (ha de estar en minúscules) ja que es usat per referir-se al index quan es fan recerques, actualitzacions o esborrar els documents que contenen.</p>

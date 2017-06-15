@@ -1,4 +1,4 @@
-# Elastic Search, Logstash, Kibana (ELK)  
+# Gestió de logs amb ELK (Elastic Search, Logstash, Kibana)  
 
 **Alumne:** Andrés Felipe Usma Montenegro  
 **Clase:** 2 ASIX  
@@ -6,11 +6,11 @@
 
 ---
 
-ELK son un conjunt de tecnologies que juntes poden oferir deteccions de incidències en organitzacions de gran mida.  
+ELK són un conjunt de tecnologies que juntes poden oferir deteccions de incidències en organitzacions de gran mida.  
 
 - Filebeat s'encarrega d'enviar els registres desde un client, a un fitxer, a Elastic Search o a Logstash.  
 
-- Logstash es el parsejador de les dades que provenen de Filebeat i que filtrades podem prescindir d'alguna part del missatge que no es important.  
+- Logstash és el parsejador de les dades que provenen de Filebeat i que filtrades podem prescindir d'alguna part del missatge que no es important.  
 
 - Elastic Search fa el paper de servidor de recerques on s'emmagatzemen les dades ja optimitzades per la indexació.  
 
@@ -22,9 +22,7 @@ ELK son un conjunt de tecnologies que juntes poden oferir deteccions de incidèn
 
 **Filebeat**
 
-FileBeat té com a funció rebre els registres de directoris o directament
-de fitxers per a finalment enviar-los a Elastic Search o Logstash. El funcionament es el següent,
-quan iniciem FileBeat fa una recerca de les rutes que tu l'hi afegeixes als prospectors.
+El funcionament és el següent, quan iniciem FileBeat fa una recerca de les rutes que tu l'hi afegeixes als prospectors.
 Per cada fitxer que troba FileBeat inicia un recol·lector. Cada recol·lector llegeix un fitxer de log 
 i finalment l'envia a Logstash.
 
@@ -60,7 +58,7 @@ El procès de logstash es basa en 3 etapes: **inputs -> filtres -> output**.
 
 ---
 
-**Inputs**: utilitzats per rebre registres i guardar-los a Logstash. Hi han varis
+**Inputs**: utilitzats per definir d'on provenen els registres. Hi han varis
 tipus de Inputs però els més usats són fitxers (llegeix les dades a partir
 de un fitxer del sistema), syslog (escolta el port 514 per missatges syslogs
 i els parseja mitjançant el format RFC3164), Beats (processa els registres enviats per Filebeat).
@@ -83,7 +81,7 @@ un trànsit segur mitjançant ssl.
 
 ---
 
-**Filtres**: serveixen per editar els logs que rebem, aquests logs han de complir el _match_ 
+**Filtres**: serveixen per transformar els logs que rebem, aquests logs han de complir el _match_ 
 que nosaltres creem mitjançant **Grok**. 
 
 **Grok**: aquesta eina ens permet organitzar els logs que rebem de manera estructurada i arbitrària.
@@ -126,7 +124,7 @@ que si tot ha anat correcte ens transformará l'estructura del registre.
 
 ---
 
-**Output**: és l'ultima etapa pel qual pasa el registre. Tenim diferents opcions a on enviar els registres
+**Output**: és l'ultima etapa per la qual passa el registre. Tenim diferents opcions a on enviar els registres
 modificats, ja sigui a un fitxer local, a Elastic Search o a l'aplicació Graphite. 
 
 Exemple de _Output_:
@@ -150,7 +148,7 @@ finalment el tipus de document que es.
 
 **Elastic Search**
 
-Elastic Search es un tecnologia de recerca i anàlisis de codi obert bastant escalable. 
+Elastic Search és un tecnologia de recerca i anàlisis bastant escalable. 
 Permet emmagatzemar, trobar i analitzar grans volums de dades ràpidament i en temps real (casi). 
 Generalment s'utilitza com a tecnologia que potencia les aplicacions que tenen característiques de recerca complexes 
 i requisits.
